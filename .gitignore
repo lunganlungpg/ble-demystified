@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+
+# Logs and test outputs
+*.log
+npm-debug.log*
+yarn-debug.log*
+.coverage/
+
+# IDE / Editor configuration
+.idea/
+*.swp
+*.swo
+
+# Temporary data outputs
+data/telemetry.live.json
