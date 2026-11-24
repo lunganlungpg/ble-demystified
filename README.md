@@ -7,6 +7,7 @@ An interactive, visual, zero-hardware educational guide and live playground for 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![Zero Hardware Required](https://img.shields.io/badge/Hardware-None%20Required-success?style=for-the-badge)](#quickstart-in-3-commands)
 [![Node 18+](https://img.shields.io/badge/Node.js-18%2B-informational?style=for-the-badge&logo=node.js)](https://nodejs.org)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge)](CONTRIBUTING.md)
 
 Ever wondered how your fitness tracker or smartwatch whispers heart-rate readings to your phone without killing its battery before lunchtime? 
 
@@ -28,6 +29,7 @@ This repository breaks down the entire BLE protocol stack from **2.4 GHz radio c
 - [Troubleshooting & OS Notes](#troubleshooting--os-notes)
 - [Documentation Deep Dives](#documentation-deep-dives)
 - [Extending the Project](#extending-the-project)
+- [Contributors](#contributors)
 - [License](#license)
 
 ---
@@ -163,6 +165,16 @@ See [`hardware/esp32/README.md`](hardware/esp32/README.md) for pinouts and seria
 1. **Environmental Sensing Service (0x181A):** Add temperature and humidity characteristics with diurnal curves.
 2. **Web Bluetooth Web MIDI:** Implement simulated BLE MIDI note streams.
 3. **AoA / AoD Direction Finding Visualizer:** Simulate Bluetooth 5.1 Constant Tone Extension (CTE) I/Q samples for micro-location tracking.
+
+---
+
+## Contributors
+
+<a href="https://github.com/lunganlungpg"><img src="https://github.com/lunganlungpg.png" width="64" alt="Lunganlung P. G." /></a>
+<a href="https://github.com/hifaislam1-png"><img src="https://github.com/hifaislam1-png.png" width="64" alt="Hifa" /></a>
+
+- **[Lunganlung P. G.](https://github.com/lunganlungpg)** — creator & maintainer
+- **[Hifa](https://github.com/hifaislam1-png)** — co-contributor
 
 ---
 
