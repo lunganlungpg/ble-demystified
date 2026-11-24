@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-and-generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run Unit Tests
+        run: |
+          cd simulator
+          npm test
+
+      - name: Regenerate SVG Plots and Diagrams
+        run: |
+          node scripts/generate-plots.js
+
+      - name: Verify Git Status Clean (No stale plots)
+        run: |
+          git status --porcelain
