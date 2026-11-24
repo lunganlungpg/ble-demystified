@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How Bluetooth Low Energy (BLE) Actually Works | Interactive Explainer</title>
+  <meta name="description" content="An interactive, beginner-friendly guide to Bluetooth Low Energy. Click through advertising, GAP states, GATT trees, live packets, and quizzes.">
+  <link rel="stylesheet" href="explainer.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body data-theme="dark">
+  <!-- Top Navigation Header -->
+  <header class="navbar">
+    <div class="nav-brand">
+      <div class="brand-logo">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+          <path d="M12 2C11.45 2 11 2.45 11 3v7.09L7.41 6.5 6 7.91 10.59 12.5 6 17.09 7.41 18.5 11 14.91V21c0 .55.45 1 1 1s1-.45 1-1v-6.09l3.59 3.59 1.41-1.41L13.41 12.5 18 7.91 16.59 6.5 13 10.09V3c0-.55-.45-1-1-1zm1 4.83l2.17 2.17L13 11.17V6.83zm0 7.34l2.17 2.17L13 18.17v-4.34z"/>
+        </svg>
+        <span>BLE Demystified</span>
+      </div>
+      <span class="nav-tagline">The Interactive Field Guide</span>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs" role="tablist" aria-label="Explainer Sections">
+      <button class="tab-btn active" role="tab" aria-selected="true" data-tab="tab-what">1. What is BLE?</button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-gap">2. GAP States</button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-gatt">3. GATT Explorer</button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-simulator">4. Live Simulator</button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-packets">5. Read vs Write vs Notify</button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-plots">6. Plots Gallery</button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-quiz">7. Quiz</button>
+    </nav>
+
+    <!-- Header Actions -->
+    <div class="nav-actions">
+      <button id="themeToggle" class="icon-toggle" aria-label="Toggle Theme" title="Toggle Light/Dark Theme">🌓</button>
+      <a href="../web/" class="live-demo-pill" target="_blank" rel="noopener">Open Live Client ↗</a>
+    </div>
+  </header>
+
+  <main class="content-wrapper">
+    <!-- ========================================================= -->
+    <!-- TAB 1: WHAT IS BLE? (ANIMATED RADIO INTERACTION)          -->
+    <!-- ========================================================= -->
+    <section id="tab-what" class="tab-panel active" role="tabpanel" aria-labelledby="tab-what-btn">
+      <div class="panel-hero">
+        <h2>How Two Devices Talk Without Killing the Battery</h2>
+        <p class="lead">
+          Forget classic Bluetooth audio streams that suck your phone's battery dry in 3 hours. 
+          <strong>Bluetooth Low Energy (BLE)</strong> is built on one brilliant trick: 
+          <em>the radio stays asleep 99% of the time</em>, wakes up for a tiny 2-millisecond chirp, and immediately goes back to sleep.
+        </p>
+      </div>
+
+      <div class="interactive-card">
+        <div class="card-header-flex">
+          <div>
+            <h3>The Advertising &amp; Connection Dance</h3>
+            <p class="subtext">Step through the exact radio packets sent over the air at 2.4 GHz.</p>
+          </div>
+          <div class="flow-controls">
+            <button id="flowPrevBtn" class="btn btn-secondary btn-sm" disabled>&larr; Prev Step</button>
+            <button id="flowPlayBtn" class="btn btn-primary btn-sm">&#9654; Play Auto</button>
+            <button id="flowNextBtn" class="btn btn-secondary btn-sm">Next Step &rarr;</button>
+          </div>
+        </div>
+
+        <!-- Animated Arena -->
+        <div class="radio-arena" id="radioArena">
+          <!-- Central Device -->
+          <div class="radio-node node-central" id="nodeCentral">
+            <div class="node-icon">📱</div>
+            <div class="node-label">Central (Phone / Browser)</div>
+            <div class="node-state-badge" id="centralStateBadge">SCANNING (Passive)</div>
+          </div>
+
+          <!-- Radio Waves Space -->
+          <div class="radio-ether" id="radioEther">
+            <div class="channel-indicator" id="channelIndicator">Channel 37 (2402 MHz)</div>
+            <div class="flying-packet" id="flyingPacket">
+              <span class="packet-chip" id="packetChip">ADV_IND</span>
+            </div>
+          </div>
+
+          <!-- Peripheral Device -->
+          <div class="radio-node node-peripheral" id="nodePeripheral">
+            <div class="node-icon">⌚</div>
+            <div class="node-label">Peripheral (PulseGlow Sensor)</div>
+            <div class="node-state-badge" id="peripheralStateBadge">ADVERTISING (100ms interval)</div>
+          </div>
+        </div>
+
+        <!-- Step Explanation Callout -->
+        <div class="step-explanation-box" id="stepExplanationBox">
+          <div class="explanation-title" id="flowStepTitle">Step 1: Periodic Advertising</div>
+          <p id="flowStepBody">
+            The peripheral sits in <strong>Advertising</strong> mode. Every 100 milliseconds, it wakes up its radio and broadcasts an <code>ADV_IND</code> packet across the three primary advertising channels (37, 38, and 39) saying: <em>"Hey world! I'm PulseGlow BLE, and I support Heart Rate Service!"</em>
+          </p>
+        </div>
+
+        <!-- 3 Advertising Channels Diagram -->
+        <div class="channel-breakdown">
+          <div class="channel-card">
+            <span class="ch-badge ch-37">CH 37 &bull; 2402 MHz</span>
+            <p>Directly below Wi-Fi Channel 1 to dodge 2.4GHz microwave &amp; home router interference.</p>
+          </div>
+          <div class="channel-card">
+            <span class="ch-badge ch-38">CH 38 &bull; 2426 MHz</span>
+            <p>Squeezed between Wi-Fi Channel 1 and Channel 6 where spectral energy is lowest.</p>
+          </div>
+          <div class="channel-card">
+            <span class="ch-badge ch-39">CH 39 &bull; 2480 MHz</span>
+            <p>Above Wi-Fi Channel 11, guarding the high end of the industrial 2.4GHz band.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- TAB 2: GAP STATES (CLICKABLE STATE MACHINE)               -->
+    <!-- ========================================================= -->
+    <section id="tab-gap" class="tab-panel" role="tabpanel">
+      <div class="panel-hero">
+        <h2>GAP: The Generic Access Profile</h2>
+        <p class="lead">
+          GAP governs what a device looks like to the outside world and which state its radio is currently in. 
+          Click any state node to highlight its valid transitions and explore its real-world behavior.
+        </p>
+      </div>
+
+      <div class="split-view">
+        <!-- Interactive State Machine Diagram -->
+        <div class="state-diagram-wrapper">
+          <div class="state-machine-canvas" id="gapCanvas">
+            <!-- Standby -->
+            <button class="gap-node active" data-state="STANDBY" id="stateStandby">
+              <span class="gap-icon">💤</span>
+              <span class="gap-title">STANDBY</span>
+              <span class="gap-desc">Radio Off / Idle</span>
+            </button>
+
+            <div class="gap-arrow-row">
+              <span class="transition-label">Enable Advertising</span>
+              <span class="transition-label">Start Scan</span>
+            </div>
+
+            <div class="gap-node-pair">
+              <!-- Advertising -->
+              <button class="gap-node" data-state="ADVERTISING" id="stateAdv">
+                <span class="gap-icon">📢</span>
+                <span class="gap-title">ADVERTISING</span>
+                <span class="gap-desc">Broadcaster (Peripheral)</span>
+              </button>
+
+              <!-- Scanning -->
+              <button class="gap-node" data-state="SCANNING" id="stateScan">
+                <span class="gap-icon">🔍</span>
+                <span class="gap-title">SCANNING</span>
+                <span class="gap-desc">Listener (Central)</span>
+              </button>
+            </div>
+
+            <div class="gap-arrow-row">
+              <span class="transition-label">&darr; Packet Detected</span>
+              <span class="transition-label">&darr; Send CONNECT_IND</span>
+            </div>
+
+            <!-- Initiating -->
+            <button class="gap-node" data-state="INITIATING" id="stateInit">
+              <span class="gap-icon">🤝</span>
+              <span class="gap-title">INITIATING</span>
+              <span class="gap-desc">Negotiating Connection Timing</span>
+            </button>
+
+            <div class="gap-arrow-row">
+              <span class="transition-label">&darr; Anchor Synchronized</span>
+            </div>
+
+            <!-- Connected -->
+            <button class="gap-node" data-state="CONNECTED" id="stateConn">
+              <span class="gap-icon">🔗</span>
+              <span class="gap-title">CONNECTED</span>
+              <span class="gap-desc">Point-to-Point FHSS Link</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- State Inspector Details -->
+        <aside class="state-details-card" id="stateDetailsCard">
+          <div class="details-header">
+            <span class="state-pill" id="detailStatePill">STANDBY</span>
+            <h3 id="detailStateTitle">Standby State</h3>
+          </div>
+          <p id="detailStateDesc">
+            The radio transmitter and receiver are completely powered down. Power consumption is microamps (&lt; 2 &mu;A).
+            The device can transition to either <em>Advertising</em> (if it wants to be found) or <em>Scanning</em> (if it is looking for others).
+          </p>
+          <div class="param-box">
+            <h4>Key GAP Parameters</h4>
+            <ul id="detailStateParams">
+              <li><strong>Current Draw:</strong> ~1.2 &mu;A</li>
+              <li><strong>Radio Channels:</strong> None</li>
+              <li><strong>Role:</strong> Idle</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- TAB 3: GATT EXPLORER (INTERACTIVE TREE)                   -->
+    <!-- ========================================================= -->
+    <section id="tab-gatt" class="tab-panel" role="tabpanel">
+      <div class="panel-hero">
+        <h2>GATT: The Generic Attribute Profile</h2>
+        <p class="lead">
+          Once connected, BLE organizes all data into a clean hierarchy: 
+          <strong>Profile &rarr; Services &rarr; Characteristics &rarr; Descriptors</strong>.
+          Click any element in the tree to inspect its 16-bit vs 128-bit UUID, permissions, and live value.
+        </p>
+      </div>
+
+      <div class="split-view">
+        <!-- Tree View -->
+        <div class="tree-container">
+          <div class="tree-toolbar">
+            <button id="expandAllBtn" class="btn btn-xs btn-outline">Expand All</button>
+            <button id="collapseAllBtn" class="btn btn-xs btn-outline">Collapse All</button>
+          </div>
+          <div class="interactive-tree" id="gattTree">
+            <!-- Populated dynamically via JS -->
+          </div>
+        </div>
+
+        <!-- Node Inspector Drawer -->
+        <div class="gatt-inspector-drawer" id="gattInspector">
+          <div class="inspector-header">
+            <span class="node-badge" id="inspNodeType">SERVICE</span>
+            <h3 id="inspNodeName">Heart Rate Service</h3>
+          </div>
+          <div class="inspector-field">
+            <label>16-bit UUID:</label>
+            <code id="inspShortUuid">0x180D</code>
+          </div>
+          <div class="inspector-field">
+            <label>128-bit Full UUID:</label>
+            <code id="inspFullUuid">0000180d-0000-1000-8000-00805f9b34fb</code>
+          </div>
+          <div class="inspector-field">
+            <label>Properties (ATT Permissions):</label>
+            <div class="prop-badges" id="inspProps">
+              <span class="prop-tag">NOTIFY</span>
+            </div>
+          </div>
+          <div class="inspector-field">
+            <label>Current Value / Description:</label>
+            <div class="val-preview-box" id="inspValue">
+              Heart Rate Measurement notifications with RR-Intervals.
+            </div>
+          </div>
+          <div class="explanation-callout">
+            <p id="inspDeepDive">
+              <strong>Why 16-bit UUIDs?</strong> The Bluetooth SIG reserved a 128-bit base UUID: 
+              <code>0000xxxx-0000-1000-8000-00805F9B34FB</code>. To save precious packet bytes over the air, 
+              standard profiles only transmit the 2-byte shortcut (e.g. <code>0x180D</code>).
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- TAB 4: LIVE SIMULATOR & PARAMETER TUNER                   -->
+    <!-- ========================================================= -->
+    <section id="tab-simulator" class="tab-panel" role="tabpanel">
+      <div class="panel-hero">
+        <h2>Live Telemetry Simulator &amp; Radio Tuner</h2>
+        <p class="lead">
+          BLE performance is an engineering tradeoff between <strong>latency</strong>, <strong>throughput</strong>, and <strong>battery life</strong>.
+          Adjust connection parameters below and observe their real-time impact on jitter and power.
+        </p>
+      </div>
+
+      <div class="simulator-layout">
+        <!-- Control Sliders -->
+        <div class="controls-card">
+          <h3>Link Layer Parameters</h3>
+
+          <div class="slider-group">
+            <div class="slider-label-row">
+              <label for="connIntervalSlider">Connection Interval (ms):</label>
+              <span class="slider-val" id="connIntervalVal">20 ms</span>
+            </div>
+            <input type="range" id="connIntervalSlider" min="7.5" max="200" step="2.5" value="20">
+            <span class="slider-hint">BLE standard: 7.5ms to 4000ms in 1.25ms increments.</span>
+          </div>
+
+          <div class="slider-group">
+            <div class="slider-label-row">
+              <label for="mtuSlider">Negotiated ATT MTU (bytes):</label>
+              <span class="slider-val" id="mtuVal">23 bytes</span>
+            </div>
+            <input type="range" id="mtuSlider" min="23" max="247" step="32" value="23">
+            <span class="slider-hint">Default is 23 bytes (3 bytes ATT header + 20 bytes payload).</span>
+          </div>
+
+          <div class="slider-group">
+            <div class="slider-label-row">
+              <label for="noiseSlider">RF Interference / Packet Loss (%):</label>
+              <span class="slider-val" id="noiseVal">2%</span>
+            </div>
+            <input type="range" id="noiseSlider" min="0" max="25" step="1" value="2">
+            <span class="slider-hint">Simulates microwave, Wi-Fi 6, and distance-induced retransmits.</span>
+          </div>
+
+          <div class="power-estimate-box">
+            <h4>Estimated Energy Profile</h4>
+            <div class="energy-meter">
+              <div class="meter-bar" id="energyMeterBar" style="width: 35%;"></div>
+            </div>
+            <p id="batteryLifeEstimate">Estimated Coin Cell (CR2032) Life: <strong>~14 months</strong></p>
+          </div>
+        </div>
+
+        <!-- Live Chart -->
+        <div class="live-chart-card">
+          <div class="chart-header">
+            <h3>Live Telemetry Stream</h3>
+            <div class="stream-stats">
+              <span>Jitter: <strong id="streamJitter">1.2ms</strong></span>
+              <span>Effective: <strong id="streamThroughput">8.0 kbps</strong></span>
+            </div>
+          </div>
+          <div class="canvas-box">
+            <canvas id="simChart" width="600" height="240"></canvas>
+          </div>
+          <div class="chart-footer-note">
+            Notice how changing the Connection Interval shifts latency immediately!
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- TAB 5: READ vs WRITE vs NOTIFY PLAYGROUND                 -->
+    <!-- ========================================================= -->
+    <section id="tab-packets" class="tab-panel" role="tabpanel">
+      <div class="panel-hero">
+        <h2>Read vs. Write vs. Notify (The Big Three)</h2>
+        <p class="lead">
+          Almost everything in BLE reduces to three operations. 
+          Click the interactive buttons below to trigger real packet animations and see the exact ATT Opcodes exchanged.
+        </p>
+      </div>
+
+      <div class="packet-comparison-grid">
+        <!-- 1. READ -->
+        <div class="action-card">
+          <div class="card-top">
+            <span class="action-pill pill-read">READ</span>
+            <h4>Pull Pattern</h4>
+          </div>
+          <p>Central asks for data; Peripheral answers with it. Synchronous round-trip request.</p>
+          <div class="mini-arena" id="arenaRead">
+            <div class="mini-node">Central</div>
+            <div class="packet-lane">
+              <span class="mini-pkt pkt-forward hidden" id="pktReadReq">ATT_READ_REQ (0x0A)</span>
+              <span class="mini-pkt pkt-backward hidden" id="pktReadRsp">ATT_READ_RSP (0x0B) [92%]</span>
+            </div>
+            <div class="mini-node">Peripheral</div>
+          </div>
+          <button id="triggerReadBtn" class="btn btn-outline btn-block">Simulate ATT Read</button>
+        </div>
+
+        <!-- 2. WRITE -->
+        <div class="action-card">
+          <div class="card-top">
+            <span class="action-pill pill-write">WRITE</span>
+            <h4>Push Pattern</h4>
+          </div>
+          <p>Central sends a command to update state on the Peripheral (e.g. change workout intensity).</p>
+          <div class="mini-arena" id="arenaWrite">
+            <div class="mini-node">Central</div>
+            <div class="packet-lane">
+              <span class="mini-pkt pkt-forward hidden" id="pktWriteCmd">ATT_WRITE_CMD (0x52)</span>
+            </div>
+            <div class="mini-node">Peripheral</div>
+          </div>
+          <button id="triggerWriteBtn" class="btn btn-outline btn-block">Simulate ATT Write</button>
+        </div>
+
+        <!-- 3. NOTIFY -->
+        <div class="action-card">
+          <div class="card-top">
+            <span class="action-pill pill-notify">NOTIFY</span>
+            <h4>Stream Pattern</h4>
+          </div>
+          <p>Peripheral pushes data unilaterally whenever fresh data arrives. Zero client polling needed!</p>
+          <div class="mini-arena" id="arenaNotify">
+            <div class="mini-node">Central</div>
+            <div class="packet-lane">
+              <span class="mini-pkt pkt-backward hidden" id="pktNotifyPkt">ATT_HANDLE_VALUE_NTF (0x1B)</span>
+            </div>
+            <div class="mini-node">Peripheral</div>
+          </div>
+          <button id="triggerNotifyBtn" class="btn btn-outline btn-block">Simulate Notification</button>
+        </div>
+      </div>
+
+      <!-- Comparison Matrix Table -->
+      <div class="table-container">
+        <h3>Protocol Comparison Matrix</h3>
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Operation</th>
+              <th>Initiated By</th>
+              <th>Requires ACK / Response?</th>
+              <th>Throughput</th>
+              <th>Typical Use Case</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Read</strong></td>
+              <td>Central (Client)</td>
+              <td>Yes (ATT_READ_RSP)</td>
+              <td>Low (Round-trip latency)</td>
+              <td>Battery %, Firmware Version, Serial #</td>
+            </tr>
+            <tr>
+              <td><strong>Write Request</strong></td>
+              <td>Central (Client)</td>
+              <td>Yes (ATT_WRITE_RSP)</td>
+              <td>Low</td>
+              <td>Critical settings (Wi-Fi credentials, PIN)</td>
+            </tr>
+            <tr>
+              <td><strong>Write Command</strong></td>
+              <td>Central (Client)</td>
+              <td>No</td>
+              <td>High</td>
+              <td>LED color, motor speed, buzzer</td>
+            </tr>
+            <tr>
+              <td><strong>Notification</strong></td>
+              <td>Peripheral (Server)</td>
+              <td>No</td>
+              <td>Very High</td>
+              <td>Heart rate stream, accelerometer, IMU</td>
+            </tr>
+            <tr>
+              <td><strong>Indication</strong></td>
+              <td>Peripheral (Server)</td>
+              <td>Yes (ATT_HANDLE_VALUE_CFM)</td>
+              <td>Medium</td>
+              <td>Medical alarms, blood glucose alerts</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- TAB 6: PLOTS GALLERY (TELEMETRY VISUALIZATIONS)           -->
+    <!-- ========================================================= -->
+    <section id="tab-plots" class="tab-panel" role="tabpanel">
+      <div class="panel-hero">
+        <h2>Real Telemetry Data &amp; Plots Gallery</h2>
+        <p class="lead">
+          These publication-ready SVGs are generated by <code>scripts/generate-plots.js</code> directly from the simulator's RF telemetry.
+          Click any plot to inspect its key takeaways.
+        </p>
+      </div>
+
+      <div class="plots-grid">
+        <!-- Plot 1 -->
+        <article class="plot-card">
+          <div class="plot-header">
+            <h4>1. RSSI vs. Time (RF Multipath &amp; Sway)</h4>
+            <span class="plot-tag">Signal Stability</span>
+          </div>
+          <div class="plot-img-wrap">
+            <img src="../docs/img/plot-rssi-time.svg" alt="Plot of RSSI vs Time" loading="lazy">
+          </div>
+          <p class="plot-caption">
+            <strong>What to notice:</strong> Notice how RSSI fluctuates by &plusmn;4 dBm even when stationary. 
+            This is caused by <em>multipath fading</em> (reflections off walls, desks, and human bodies).
+          </p>
+        </article>
+
+        <!-- Plot 2 -->
+        <article class="plot-card">
+          <div class="plot-header">
+            <h4>2. Inter-Arrival Jitter Histogram</h4>
+            <span class="plot-tag">Timing Consistency</span>
+          </div>
+          <div class="plot-img-wrap">
+            <img src="../docs/img/plot-jitter-histogram.svg" alt="Notification Inter-Arrival Histogram" loading="lazy">
+          </div>
+          <p class="plot-caption">
+            <strong>What to notice:</strong> The sharp peak at exactly 20.0 ms matches the configured Connection Interval. 
+            The tiny tail at 40 ms represents packet retransmissions at the Link Layer due to RF collisions.
+          </p>
+        </article>
+
+        <!-- Plot 3 -->
+        <article class="plot-card">
+          <div class="plot-header">
+            <h4>3. Heart Rate Waveform &amp; RR-Interval</h4>
+            <span class="plot-tag">Physiological Signal</span>
+          </div>
+          <div class="plot-img-wrap">
+            <img src="../docs/img/plot-heart-rate-wave.svg" alt="Heart Rate wave over time" loading="lazy">
+          </div>
+          <p class="plot-caption">
+            <strong>What to notice:</strong> Shows both raw BPM and instantaneous RR intervals (time between R-peaks in ECG), 
+            simulating natural Respiratory Sinus Arrhythmia (breathing modulating heart rate).
+          </p>
+        </article>
+
+        <!-- Plot 4 -->
+        <article class="plot-card">
+          <div class="plot-header">
+            <h4>4. Throughput vs. ATT MTU Size</h4>
+            <span class="plot-tag">Bandwidth Impact</span>
+          </div>
+          <div class="plot-img-wrap">
+            <img src="../docs/img/plot-throughput-mtu.svg" alt="Throughput vs MTU Size plot" loading="lazy">
+          </div>
+          <p class="plot-caption">
+            <strong>What to notice:</strong> Negotiating a larger MTU (from default 23 bytes to 247 bytes) produces a 
+            <strong>12x increase in throughput</strong> with ZERO extra radio wakeups!
+          </p>
+        </article>
+
+        <!-- Plot 5 -->
+        <article class="plot-card full-span-plot">
+          <div class="plot-header">
+            <h4>5. Protocol Gantt Timeline (Scan &rarr; Stream)</h4>
+            <span class="plot-tag">Handshake Sequence</span>
+          </div>
+          <div class="plot-img-wrap">
+            <img src="../docs/img/plot-packet-timeline.svg" alt="Packet timeline Gantt chart" loading="lazy">
+          </div>
+          <p class="plot-caption">
+            <strong>What to notice:</strong> The transition from advertising channel contention to synchronized connection events. 
+            Once the anchor point is locked, packets land with microsecond precision.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- TAB 7: INTERACTIVE QUIZ                                   -->
+    <!-- ========================================================= -->
+    <section id="tab-quiz" class="tab-panel" role="tabpanel">
+      <div class="panel-hero">
+        <h2>Test Your BLE Intuition</h2>
+        <p class="lead">Five quick questions to verify you've got the essentials down.</p>
+      </div>
+
+      <div class="quiz-container" id="quizContainer">
+        <!-- Quiz questions rendered dynamically by explainer.js -->
+      </div>
+      <div class="quiz-summary hidden" id="quizSummary">
+        <h3>Quiz Complete!</h3>
+        <p id="quizScoreText">You scored 5 out of 5.</p>
+        <button id="resetQuizBtn" class="btn btn-primary">Retake Quiz</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p>
+      BLE Demystified &bull; Open Source Educational Explainer &bull;
+      <a href="../web/" target="_blank">Launch Web Demo</a> &bull;
+      <a href="../docs/glossary.md" target="_blank">Glossary</a> &bull;
+      MIT License
+    </p>
+  </footer>
+
+  <script src="explainer.js"></script>
+</body>
+</html>
