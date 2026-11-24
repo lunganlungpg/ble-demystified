@@ -79,6 +79,7 @@ const elements = {
   logConsole: document.getElementById('logConsole'),
   clearLogBtn: document.getElementById('clearLogBtn'),
   copyLogBtn: document.getElementById('copyLogBtn'),
+  exportJsonBtn: document.getElementById('exportJsonBtn'),
   liveChartCanvas: document.getElementById('liveChart')
 };
 
@@ -738,4 +739,26 @@ document.addEventListener('DOMContentLoaded', () => {
       log('SYSTEM', 'Protocol log copied to clipboard!');
     });
   });
+
+  if (elements.exportJsonBtn) {
+    elements.exportJsonBtn.addEventListener('click', () => {
+      const exportData = {
+        exportedAt: new Date().toISOString(),
+        device: state.device ? state.device.name : 'PulseGlow BLE (Simulated)',
+        mode: state.mode,
+        heartRateHistory: state.heartRateHistory,
+        currentBpm: elements.bpmDisplay.textContent,
+        currentRssi: elements.rssiDisplay.textContent,
+        logs: elements.logConsole.innerText.split('\n').filter(Boolean)
+      };
+      const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `ble-telemetry-${Date.now()}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      log('SYSTEM', 'Exported session telemetry JSON file.');
+    });
+  }
 });

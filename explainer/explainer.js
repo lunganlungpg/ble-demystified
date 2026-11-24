@@ -35,31 +35,47 @@ function initNavigation() {
   const tabBtns = document.querySelectorAll('.tab-btn');
   const tabPanels = document.querySelectorAll('.tab-panel');
 
+  function switchTab(targetId) {
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    tabPanels.forEach(p => p.classList.remove('active'));
+
+    const btn = Array.from(tabBtns).find(b => b.getAttribute('data-tab') === targetId);
+    if (btn) {
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+    }
+    const targetPanel = document.getElementById(targetId);
+    if (targetPanel) {
+      targetPanel.classList.add('active');
+    }
+
+    explainerState.currentTab = targetId;
+
+    if (targetId === 'tab-simulator' && !explainerState.simChart) {
+      initSimChart();
+    }
+  }
+
   tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const targetId = btn.getAttribute('data-tab');
-
-      tabBtns.forEach(b => {
-        b.classList.remove('active');
-        b.setAttribute('aria-selected', 'false');
-      });
-      tabPanels.forEach(p => p.classList.remove('active'));
-
-      btn.classList.add('active');
-      btn.setAttribute('aria-selected', 'true');
-      const targetPanel = document.getElementById(targetId);
-      if (targetPanel) {
-        targetPanel.classList.add('active');
-      }
-
-      explainerState.currentTab = targetId;
-
-      // Tab specific triggers
-      if (targetId === 'tab-simulator' && !explainerState.simChart) {
-        initSimChart();
+      switchTab(targetId);
+      if (history.replaceState) {
+        history.replaceState(null, '', '#' + targetId);
       }
     });
   });
+
+  // Check URL hash on initial load
+  if (window.location.hash) {
+    const hash = window.location.hash.substring(1);
+    if (document.getElementById(hash)) {
+      switchTab(hash);
+    }
+  }
 
   // Theme Toggle
   const themeToggle = document.getElementById('themeToggle');
