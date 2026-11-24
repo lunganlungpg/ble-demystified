@@ -1,0 +1,19 @@
+flowchart TD
+    subgraph ADVERTISING_PHASE["Phase 1: Periodic Advertising (Asynchronous)"]
+        A1["Sleep (Radio OFF) ~98ms"] --> A2["TX on CH 37 (2402 MHz)"]
+        A2 --> A3["T_IFS (150 μs)"]
+        A3 --> A4["TX on CH 38 (2426 MHz)"]
+        A4 --> A5["T_IFS (150 μs)"]
+        A5 --> A6["TX on CH 39 (2480 MHz)"]
+        A6 --> A1
+    end
+
+    subgraph CONNECTION_PHASE["Phase 2: Connected Events (Synchronous FHSS)"]
+        C1["Connection Anchor (t = 0ms)"] --> C2["Central Packet TX (Data CH n)"]
+        C2 --> C3["T_IFS (150 μs)"]
+        C3 --> C4["Peripheral Packet RX & Reply"]
+        C4 --> C5["Sleep until next Connection Event (t = 20ms)"]
+        C5 --> C1
+    end
+
+    ADVERTISING_PHASE -. CONNECT_IND .-> CONNECTION_PHASE
