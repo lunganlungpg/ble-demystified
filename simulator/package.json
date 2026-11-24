@@ -1,0 +1,14 @@
+{
+  "name": "ble-demystified-simulator",
+  "version": "1.0.0",
+  "description": "Zero-dependency simulated BLE GATT peripheral and telemetry streamer",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test ../tests/*.test.js",
+    "telemetry": "node -e \"require('./telemetry').generateSampleDataset('../data/telemetry.sample.json')\""
+  },
+  "keywords": ["ble", "bluetooth-low-energy", "gatt", "simulator", "telemetry"],
+  "author": "BLE Demystified Contributors",
+  "license": "MIT"
+}
