@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 380" width="780" height="380">
+  <style>
+    .bg { fill: #0f172a; }
+    .grid { stroke: #1e293b; stroke-width: 1; }
+    .axis { stroke: #334155; stroke-width: 1.5; }
+    .text-title { font-family: system-ui, -apple-system, sans-serif; font-size: 16px; font-weight: 700; fill: #f8fafc; }
+    .text-subtitle { font-family: system-ui, -apple-system, sans-serif; font-size: 11px; fill: #94a3b8; }
+    .text-label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; fill: #94a3b8; }
+    .text-axis { font-family: system-ui, -apple-system, sans-serif; font-size: 11px; font-weight: 600; fill: #cbd5e1; }
+    .line-primary { fill: none; stroke: #38bdf8; stroke-width: 2.2; stroke-linejoin: round; stroke-linecap: round; }
+    .line-accent { fill: none; stroke: #f43f5e; stroke-width: 2.0; stroke-linejoin: round; stroke-linecap: round; }
+    .area-primary { fill: rgba(56, 189, 248, 0.12); }
+    .legend-box { fill: #1e293b; stroke: #334155; rx: 6; }
+  </style>
+  <rect width="780" height="380" rx="10" class="bg" />
+  <!-- Header -->
+  <text x="40" y="34" class="text-title">Effective Data Throughput vs. ATT MTU Size</text>
+  <text x="40" y="50" class="text-subtitle">BLE Demystified Telemetry Engine &bull; Link Layer Capture</text>
+  
+    <line x1="70" y1="325" x2="740" y2="325" class="grid" /><text x="60" y="329" text-anchor="end" class="text-label">0 kbps</text><line x1="70" y1="268.1818181818182" x2="740" y2="268.1818181818182" class="grid" /><text x="60" y="272.1818181818182" text-anchor="end" class="text-label">25 kbps</text><line x1="70" y1="211.36363636363637" x2="740" y2="211.36363636363637" class="grid" /><text x="60" y="215.36363636363637" text-anchor="end" class="text-label">50 kbps</text><line x1="70" y1="154.54545454545456" x2="740" y2="154.54545454545456" class="grid" /><text x="60" y="158.54545454545456" text-anchor="end" class="text-label">75 kbps</text><line x1="70" y1="97.72727272727275" x2="740" y2="97.72727272727275" class="grid" /><text x="60" y="101.72727272727275" text-anchor="end" class="text-label">100 kbps</text>
+    <line x1="70" y1="325" x2="740" y2="325" class="axis" />
+    
+      <rect x="96.80000000000001" y="306.8181818181818" width="80.39999999999999" height="18.18181818181818" rx="5" fill="#38bdf8" />
+      <text x="137" y="298.8181818181818" text-anchor="middle" class="text-label" font-weight="bold">8.0 kbps</text>
+      <text x="137" y="345" text-anchor="middle" class="text-label">MTU 23</text>
+      <text x="137" y="359" text-anchor="middle" class="text-subtitle">(20B payload)</text>
+    
+      <rect x="230.8" y="269.54545454545456" width="80.39999999999999" height="55.45454545454545" rx="5" fill="#38bdf8" />
+      <text x="271" y="261.54545454545456" text-anchor="middle" class="text-label" font-weight="bold">24.4 kbps</text>
+      <text x="271" y="345" text-anchor="middle" class="text-label">MTU 64</text>
+      <text x="271" y="359" text-anchor="middle" class="text-subtitle">(61B payload)</text>
+    
+      <rect x="364.8" y="211.36363636363637" width="80.39999999999999" height="113.63636363636363" rx="5" fill="#38bdf8" />
+      <text x="405" y="203.36363636363637" text-anchor="middle" class="text-label" font-weight="bold">50.0 kbps</text>
+      <text x="405" y="345" text-anchor="middle" class="text-label">MTU 128</text>
+      <text x="405" y="359" text-anchor="middle" class="text-subtitle">(125B payload)</text>
+    
+      <rect x="498.8" y="159.54545454545456" width="80.39999999999999" height="165.45454545454544" rx="5" fill="#38bdf8" />
+      <text x="539" y="151.54545454545456" text-anchor="middle" class="text-label" font-weight="bold">72.8 kbps</text>
+      <text x="539" y="345" text-anchor="middle" class="text-label">MTU 185</text>
+      <text x="539" y="359" text-anchor="middle" class="text-subtitle">(182B payload)</text>
+    
+      <rect x="632.8" y="103.18181818181819" width="80.39999999999999" height="221.8181818181818" rx="5" fill="#38bdf8" />
+      <text x="673" y="95.18181818181819" text-anchor="middle" class="text-label" font-weight="bold">97.6 kbps</text>
+      <text x="673" y="345" text-anchor="middle" class="text-label">MTU 247</text>
+      <text x="673" y="359" text-anchor="middle" class="text-subtitle">(244B payload)</text>
+    
+    <text x="390" y="374" text-anchor="middle" class="text-axis">Negotiated ATT MTU Size (Bytes)</text>
+    <text x="20" y="200" transform="rotate(-90 20 200)" text-anchor="middle" class="text-axis">Effective Throughput (kbps)</text>
+  
+</svg>

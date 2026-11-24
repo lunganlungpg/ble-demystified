@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 460" width="820" height="460">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#38bdf8" />
+    </marker>
+  </defs>
+  <style>
+    .bg { fill: #0f172a; }
+    .text-title { font-family: system-ui, sans-serif; font-weight: 700; fill: #f8fafc; }
+    .text-subtitle { font-family: system-ui, sans-serif; font-size: 11px; fill: #94a3b8; }
+    .text-label { font-family: ui-monospace, monospace; font-size: 11px; fill: #94a3b8; }
+  </style>
+  <rect width="820" height="460" rx="10" class="bg" />
+  <text x="40" y="34" class="text-title">Advertising vs Connection Packet Timing</text>
+  <text x="40" y="50" class="text-subtitle">BLE Demystified Architecture Series &bull; docs/diagrams/advertising-connection-timeline.mmd</text>
+  
+      <g transform="translate(60, 80)">
+        <rect x="0" y="0" width="700" height="280" rx="8" fill="#1e293b" stroke="#334155" />
+        <text x="350" y="40" text-anchor="middle" class="text-title">Advertising vs Connection Packet Timing</text>
+        <foreignObject x="30" y="70" width="640" height="190">
+          <pre xmlns="http://www.w3.org/1999/xhtml" style="color: #94a3b8; font-family: monospace; font-size: 11px; white-space: pre-wrap; line-height: 1.5;">flowchart TD
+    subgraph ADVERTISING_PHASE["Phase 1: Periodic Advertising (Asynchronous)"]
+        A1["Sleep (Radio OFF) ~98ms"] --> A2["TX on CH 37 (2402 MHz)"]
+        A2 --> A3["T_IFS (150 μs)"]
+        A3 --> A4["TX on CH 38 (2426 MHz)"]
+        A4 --> A5["T_IFS (150 μs)"]
+        A5 --> A6["TX on CH 39 (2480 MHz)"]
+        A6 --> A1
+    end
+
+    subgraph CONNECTION_PHASE["Phase 2: Connected Events (Synchronous FHSS)"]
+        C1["Connection Anchor (t = 0ms)"] --> C2["Central Packet TX (Data CH n)"]
+        C2 --> C3["T_IFS (150 μs)"]
+        C3 --> C4["Peripheral Packet RX & Reply"]
+        C4 --> C5["Sleep until next Connection Event (t = 20ms)"]
+        C5 --> C1
+    end
+
+    ADVERTISING_PHASE -. CONNECT_IND .-> CONNECTION_PHASE</pre>
+        </foreignObject>
+      </g>
+    
+</svg>

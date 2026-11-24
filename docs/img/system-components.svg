@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 460" width="820" height="460">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#38bdf8" />
+    </marker>
+  </defs>
+  <style>
+    .bg { fill: #0f172a; }
+    .text-title { font-family: system-ui, sans-serif; font-weight: 700; fill: #f8fafc; }
+    .text-subtitle { font-family: system-ui, sans-serif; font-size: 11px; fill: #94a3b8; }
+    .text-label { font-family: ui-monospace, monospace; font-size: 11px; fill: #94a3b8; }
+  </style>
+  <rect width="820" height="460" rx="10" class="bg" />
+  <text x="40" y="34" class="text-title">Repository Architecture & Data Flow</text>
+  <text x="40" y="50" class="text-subtitle">BLE Demystified Architecture Series &bull; docs/diagrams/system-components.mmd</text>
+  
+      <g transform="translate(60, 80)">
+        <rect x="0" y="0" width="700" height="280" rx="8" fill="#1e293b" stroke="#334155" />
+        <text x="350" y="40" text-anchor="middle" class="text-title">Repository Architecture & Data Flow</text>
+        <foreignObject x="30" y="70" width="640" height="190">
+          <pre xmlns="http://www.w3.org/1999/xhtml" style="color: #94a3b8; font-family: monospace; font-size: 11px; white-space: pre-wrap; line-height: 1.5;">flowchart LR
+    subgraph CENTRAL_TIER["Central / Client Tier"]
+        WEB_APP["Web Client
+(web/index.html & app.js)"]
+        EXPLAINER["Interactive Explainer
+(explainer/index.html)"]
+        WEB_BT["Web Bluetooth API
+(navigator.bluetooth)"]
+    end
+
+    subgraph BRIDGE_TIER["Simulation & Transport Tier"]
+        HTTP_SSE["Zero-Dependency Server
+(simulator/server.js)"]
+        REST_API["REST Endpoints
+(/api/status, /api/gatt/*)"]
+        SSE_STREAM["Server-Sent Events
+(/api/events)"]
+    end
+
+    subgraph PERIPHERAL_TIER["Peripheral Tier"]
+        GATT_DB["Simulated GATT Database
+(Battery, HR, Custom Control)"]
+        TELEMETRY["Telemetry Engine
+(simulator/telemetry.js)"]
+        ESP32["Optional ESP32 Firmware
+(hardware/esp32/ble_peripheral.ino)"]
+    end
+
+    subgraph DATA_TIER["Visuals & Datasets"]
+        DATASET["data/telemetry.sample.json"]
+        PLOTS["docs/img/*.svg"]
+    end
+
+    WEB_APP <--> WEB_BT
+    WEB_BT -. Physical BLE .-> ESP32
+    WEB_APP <--> HTTP_SSE
+    EXPLAINER <--> HTTP_SSE
+    HTTP_SSE --> REST_API & SSE_STREAM
+    REST_API & SSE_STREAM <--> GATT_DB
+    GATT_DB --> TELEMETRY
+    TELEMETRY --> DATASET
+    DATASET --> PLOTS</pre>
+        </foreignObject>
+      </g>
+    
+</svg>
