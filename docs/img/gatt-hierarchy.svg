@@ -13,7 +13,7 @@
   </style>
   <rect width="820" height="460" rx="10" class="bg" />
   <text x="40" y="34" class="text-title">GATT Database Hierarchy</text>
-  <text x="40" y="50" class="text-subtitle">BLE Demystified Architecture Series &bull; docs/diagrams/gatt-hierarchy.mmd</text>
+  <text x="40" y="50" class="text-subtitle">BLE Demystified Architecture Series &#8226; docs/diagrams/gatt-hierarchy.mmd</text>
   
       <g transform="translate(40, 75)">
         <!-- Top Profile -->
