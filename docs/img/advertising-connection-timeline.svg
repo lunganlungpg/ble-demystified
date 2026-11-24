@@ -15,30 +15,74 @@
   <text x="40" y="34" class="text-title">Advertising vs Connection Packet Timing</text>
   <text x="40" y="50" class="text-subtitle">BLE Demystified Architecture Series &bull; docs/diagrams/advertising-connection-timeline.mmd</text>
   
-      <g transform="translate(60, 80)">
-        <rect x="0" y="0" width="700" height="280" rx="8" fill="#1e293b" stroke="#334155" />
-        <text x="350" y="40" text-anchor="middle" class="text-title">Advertising vs Connection Packet Timing</text>
-        <foreignObject x="30" y="70" width="640" height="190">
-          <pre xmlns="http://www.w3.org/1999/xhtml" style="color: #94a3b8; font-family: monospace; font-size: 11px; white-space: pre-wrap; line-height: 1.5;">flowchart TD
-    subgraph ADVERTISING_PHASE["Phase 1: Periodic Advertising (Asynchronous)"]
-        A1["Sleep (Radio OFF) ~98ms"] --> A2["TX on CH 37 (2402 MHz)"]
-        A2 --> A3["T_IFS (150 μs)"]
-        A3 --> A4["TX on CH 38 (2426 MHz)"]
-        A4 --> A5["T_IFS (150 μs)"]
-        A5 --> A6["TX on CH 39 (2480 MHz)"]
-        A6 --> A1
-    end
+      <g transform="translate(40, 75)">
+        <!-- Track 1: Advertising -->
+        <rect x="0" y="0" width="740" height="110" rx="8" fill="#1e293b" stroke="#38bdf8" />
+        <text x="20" y="25" class="text-title" font-size="12">PHASE 1: PERIODIC ADVERTISING (Asynchronous Radio Bursts)</text>
 
-    subgraph CONNECTION_PHASE["Phase 2: Connected Events (Synchronous FHSS)"]
-        C1["Connection Anchor (t = 0ms)"] --> C2["Central Packet TX (Data CH n)"]
-        C2 --> C3["T_IFS (150 μs)"]
-        C3 --> C4["Peripheral Packet RX & Reply"]
-        C4 --> C5["Sleep until next Connection Event (t = 20ms)"]
-        C5 --> C1
-    end
+        <rect x="20" y="45" width="130" height="45" rx="4" fill="#0f172a" stroke="#64748b" />
+        <text x="85" y="65" text-anchor="middle" class="text-title" font-size="10">Deep Sleep</text>
+        <text x="85" y="80" text-anchor="middle" class="text-subtitle">~98 ms (&lt; 2 &mu;A)</text>
 
-    ADVERTISING_PHASE -. CONNECT_IND .-> CONNECTION_PHASE</pre>
-        </foreignObject>
+        <path d="M 150 67 L 175 67" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrow)" />
+
+        <rect x="180" y="45" width="75" height="45" rx="4" fill="#0284c7" />
+        <text x="217" y="65" text-anchor="middle" class="text-title" font-size="10">CH 37</text>
+        <text x="217" y="80" text-anchor="middle" class="text-subtitle">2402 MHz</text>
+
+        <text x="272" y="70" text-anchor="middle" class="text-subtitle" font-size="9">150 &mu;s</text>
+
+        <rect x="290" y="45" width="75" height="45" rx="4" fill="#059669" />
+        <text x="327" y="65" text-anchor="middle" class="text-title" font-size="10">CH 38</text>
+        <text x="327" y="80" text-anchor="middle" class="text-subtitle">2426 MHz</text>
+
+        <text x="382" y="70" text-anchor="middle" class="text-subtitle" font-size="9">150 &mu;s</text>
+
+        <rect x="400" y="45" width="75" height="45" rx="4" fill="#7e22ce" />
+        <text x="437" y="65" text-anchor="middle" class="text-title" font-size="10">CH 39</text>
+        <text x="437" y="80" text-anchor="middle" class="text-subtitle">2480 MHz</text>
+
+        <path d="M 475 67 L 515 67" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrow)" />
+
+        <rect x="520" y="45" width="200" height="45" rx="4" fill="#0f172a" stroke="#64748b" />
+        <text x="620" y="65" text-anchor="middle" class="text-title" font-size="10">Deep Sleep until next event</text>
+        <text x="620" y="80" text-anchor="middle" class="text-subtitle">Total On-Air Time &lt; 2.5 ms (97.5% Sleep!)</text>
+
+        <!-- Downward Handshake Arrow -->
+        <path d="M 437 90 L 437 130" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)" />
+        <text x="495" y="115" class="text-label" font-size="10" fill="#f59e0b">CONNECT_IND</text>
+
+        <!-- Track 2: Connected Events -->
+        <rect x="0" y="140" width="740" height="135" rx="8" fill="#1e293b" stroke="#10b981" />
+        <text x="20" y="165" class="text-title" font-size="12">PHASE 2: SYNCHRONIZED CONNECTION EVENTS (Frequency Hopping FHSS)</text>
+
+        <rect x="20" y="185" width="100" height="60" rx="4" fill="#0f172a" stroke="#10b981" />
+        <text x="70" y="210" text-anchor="middle" class="text-title" font-size="10">Anchor Point</text>
+        <text x="70" y="225" text-anchor="middle" class="text-subtitle">t = 0.0 ms</text>
+
+        <path d="M 120 215 L 145 215" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrow)" />
+
+        <rect x="150" y="185" width="110" height="60" rx="4" fill="#0284c7" />
+        <text x="205" y="210" text-anchor="middle" class="text-title" font-size="10">Central TX</text>
+        <text x="205" y="225" text-anchor="middle" class="text-subtitle">Data CH n (0-36)</text>
+
+        <text x="282" y="218" text-anchor="middle" class="text-subtitle" font-size="9">150 &mu;s T_IFS</text>
+
+        <rect x="305" y="185" width="110" height="60" rx="4" fill="#059669" />
+        <text x="360" y="210" text-anchor="middle" class="text-title" font-size="10">Peripheral RX/TX</text>
+        <text x="360" y="225" text-anchor="middle" class="text-subtitle">Data reply / ACK</text>
+
+        <path d="M 415 215 L 445 215" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrow)" />
+
+        <rect x="450" y="185" width="140" height="60" rx="4" fill="#0f172a" stroke="#64748b" />
+        <text x="520" y="210" text-anchor="middle" class="text-title" font-size="10">Radio Sleep</text>
+        <text x="520" y="225" text-anchor="middle" class="text-subtitle">Wait for next interval</text>
+
+        <path d="M 590 215 L 615 215" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrow)" />
+
+        <rect x="620" y="185" width="105" height="60" rx="4" fill="#0f172a" stroke="#10b981" />
+        <text x="672" y="210" text-anchor="middle" class="text-title" font-size="10">Next Event</text>
+        <text x="672" y="225" text-anchor="middle" class="text-subtitle">t = 20.0 ms (Hop!)</text>
       </g>
     
 </svg>

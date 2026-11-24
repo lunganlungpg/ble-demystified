@@ -15,48 +15,69 @@
   <text x="40" y="34" class="text-title">GATT Database Hierarchy</text>
   <text x="40" y="50" class="text-subtitle">BLE Demystified Architecture Series &bull; docs/diagrams/gatt-hierarchy.mmd</text>
   
-      <g transform="translate(60, 80)">
-        <rect x="0" y="0" width="700" height="280" rx="8" fill="#1e293b" stroke="#334155" />
-        <text x="350" y="40" text-anchor="middle" class="text-title">GATT Database Hierarchy</text>
-        <foreignObject x="30" y="70" width="640" height="190">
-          <pre xmlns="http://www.w3.org/1999/xhtml" style="color: #94a3b8; font-family: monospace; font-size: 11px; white-space: pre-wrap; line-height: 1.5;">flowchart TD
-    PROFILE["Heart Rate Sensor Profile (HRP)"]
+      <g transform="translate(40, 75)">
+        <!-- Top Profile -->
+        <rect x="250" y="0" width="240" height="38" rx="6" fill="#0284c7" stroke="#38bdf8" />
+        <text x="370" y="24" text-anchor="middle" class="text-title" font-size="13">Heart Rate Profile (HRP)</text>
 
-    subgraph SERVICES["Primary GATT Services"]
-        S1["Generic Access Service (0x1800)"]
-        S2["Battery Service (0x180F)"]
-        S3["Heart Rate Service (0x180D)"]
-        S4["Custom Control Service (0xFFF0)"]
-    end
+        <!-- Connecting lines -->
+        <path d="M 370 38 L 370 65 L 80 65 L 80 85" stroke="#38bdf8" stroke-width="1.5" />
+        <path d="M 370 65 L 260 65 L 260 85" stroke="#38bdf8" stroke-width="1.5" />
+        <path d="M 370 65 L 480 65 L 480 85" stroke="#38bdf8" stroke-width="1.5" />
+        <path d="M 370 65 L 660 65 L 660 85" stroke="#38bdf8" stroke-width="1.5" />
 
-    subgraph CHARACTERISTICS["Characteristics (Value + Properties)"]
-        C1["Device Name (0x2A00)
-[READ] 'PulseGlow BLE'"]
-        C2["Battery Level (0x2A19)
-[READ, NOTIFY] 92%"]
-        C3["Heart Rate Measurement (0x2A37)
-[NOTIFY] Flags, BPM, RR"]
-        C4["Body Sensor Location (0x2A38)
-[READ] 1 (Chest)"]
-        C5["Mode Control (0xFFF1)
-[READ, WRITE] 0 (Resting)"]
-    end
+        <!-- 4 Services -->
+        <rect x="5" y="85" width="150" height="45" rx="6" fill="#1e293b" stroke="#10b981" />
+        <text x="80" y="104" text-anchor="middle" class="text-title" font-size="11">Generic Access</text>
+        <text x="80" y="120" text-anchor="middle" class="text-subtitle">0x1800 (SIG Standard)</text>
 
-    subgraph DESCRIPTORS["Descriptors (Metadata & Config)"]
-        D1["CCCD (0x2902)
-Client Characteristic Config"]
-        D2["CCCD (0x2902)
-Client Characteristic Config"]
-    end
+        <rect x="185" y="85" width="150" height="45" rx="6" fill="#1e293b" stroke="#10b981" />
+        <text x="260" y="104" text-anchor="middle" class="text-title" font-size="11">Battery Service</text>
+        <text x="260" y="120" text-anchor="middle" class="text-subtitle">0x180F (SIG Standard)</text>
 
-    PROFILE --> S1 & S2 & S3 & S4
-    S1 --> C1
-    S2 --> C2
-    S3 --> C3 & C4
-    S4 --> C5
-    C2 --> D1
-    C3 --> D2</pre>
-        </foreignObject>
+        <rect x="385" y="85" width="190" height="45" rx="6" fill="#1e293b" stroke="#10b981" stroke-width="2" />
+        <text x="480" y="104" text-anchor="middle" class="text-title" font-size="11">Heart Rate Service</text>
+        <text x="480" y="120" text-anchor="middle" class="text-subtitle">0x180D (Primary Target)</text>
+
+        <rect x="595" y="85" width="140" height="45" rx="6" fill="#1e293b" stroke="#a855f7" />
+        <text x="665" y="104" text-anchor="middle" class="text-title" font-size="11">Custom Control</text>
+        <text x="665" y="120" text-anchor="middle" class="text-subtitle">0xFFF0 (128-bit Vendor)</text>
+
+        <!-- Characteristics -->
+        <!-- Under Generic Access -->
+        <path d="M 80 130 L 80 160" stroke="#64748b" stroke-width="1.5" />
+        <rect x="5" y="160" width="150" height="48" rx="6" fill="#0f172a" stroke="#334155" />
+        <text x="80" y="180" text-anchor="middle" class="text-title" font-size="10">Device Name (0x2A00)</text>
+        <text x="80" y="196" text-anchor="middle" class="text-subtitle">[READ] 'PulseGlow BLE'</text>
+
+        <!-- Under Battery -->
+        <path d="M 260 130 L 260 160" stroke="#64748b" stroke-width="1.5" />
+        <rect x="185" y="160" width="150" height="48" rx="6" fill="#0f172a" stroke="#334155" />
+        <text x="260" y="180" text-anchor="middle" class="text-title" font-size="10">Battery Level (0x2A19)</text>
+        <text x="260" y="196" text-anchor="middle" class="text-subtitle">[READ, NOTIFY] 92%</text>
+
+        <!-- Under Heart Rate -->
+        <path d="M 450 130 L 450 160" stroke="#64748b" stroke-width="1.5" />
+        <rect x="360" y="160" width="175" height="48" rx="6" fill="#0f172a" stroke="#38bdf8" />
+        <text x="447" y="180" text-anchor="middle" class="text-title" font-size="10">HR Measurement (0x2A37)</text>
+        <text x="447" y="196" text-anchor="middle" class="text-subtitle">[NOTIFY] Flags, BPM, RR</text>
+
+        <path d="M 545 130 L 545 160" stroke="#64748b" stroke-width="1.5" />
+        <rect x="540" y="160" width="100" height="48" rx="6" fill="#0f172a" stroke="#334155" />
+        <text x="590" y="180" text-anchor="middle" class="text-title" font-size="10">Location (0x2A38)</text>
+        <text x="590" y="196" text-anchor="middle" class="text-subtitle">[READ] 1=Chest</text>
+
+        <!-- Under Custom -->
+        <path d="M 665 130 L 665 160" stroke="#64748b" stroke-width="1.5" />
+        <rect x="645" y="160" width="95" height="48" rx="6" fill="#0f172a" stroke="#334155" />
+        <text x="692" y="180" text-anchor="middle" class="text-title" font-size="10">Mode (0xFFF1)</text>
+        <text x="692" y="196" text-anchor="middle" class="text-subtitle">[WRITE] 0-2</text>
+
+        <!-- CCCD Descriptors -->
+        <path d="M 447 208 L 447 240" stroke="#f59e0b" stroke-width="1.5" />
+        <rect x="350" y="240" width="195" height="42" rx="6" fill="#1e293b" stroke="#f59e0b" />
+        <text x="447" y="258" text-anchor="middle" class="text-title" font-size="10" fill="#f59e0b">CCCD Descriptor (0x2902)</text>
+        <text x="447" y="272" text-anchor="middle" class="text-subtitle">Write 0x0001 to enable streaming</text>
       </g>
     
 </svg>

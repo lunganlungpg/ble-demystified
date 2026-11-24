@@ -612,15 +612,261 @@ function renderDiagramSvg(name, info) {
         <text x="350" y="330" text-anchor="middle" class="text-title" font-size="13">PHYSICAL LAYER (PHY) &bull; 2.4 GHz GFSK Radio, 1 Mbps</text>
       </g>
     `;
-  } else {
-    // Generic clean card presentation for other diagrams
+  } else if (name === 'system-components') {
     bodySvg = `
-      <g transform="translate(60, 80)">
-        <rect x="0" y="0" width="700" height="280" rx="8" fill="#1e293b" stroke="#334155" />
-        <text x="350" y="40" text-anchor="middle" class="text-title">${info.title}</text>
-        <foreignObject x="30" y="70" width="640" height="190">
-          <pre xmlns="http://www.w3.org/1999/xhtml" style="color: #94a3b8; font-family: monospace; font-size: 11px; white-space: pre-wrap; line-height: 1.5;">${info.mmd.trim()}</pre>
-        </foreignObject>
+      <g transform="translate(40, 75)">
+        <!-- Tier 1: Client -->
+        <rect x="0" y="0" width="220" height="230" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5" />
+        <rect x="0" y="0" width="220" height="32" rx="8" fill="#0284c7" />
+        <text x="110" y="21" text-anchor="middle" class="text-title" font-size="12">CENTRAL / CLIENT TIER</text>
+        <rect x="15" y="45" width="190" height="45" rx="6" fill="#0f172a" stroke="#334155" />
+        <text x="110" y="65" text-anchor="middle" class="text-title" font-size="11">Web Bluetooth Client</text>
+        <text x="110" y="80" text-anchor="middle" class="text-subtitle">web/index.html &amp; app.js</text>
+
+        <rect x="15" y="100" width="190" height="45" rx="6" fill="#0f172a" stroke="#334155" />
+        <text x="110" y="120" text-anchor="middle" class="text-title" font-size="11">Interactive Explainer</text>
+        <text x="110" y="135" text-anchor="middle" class="text-subtitle">explainer/index.html</text>
+
+        <rect x="15" y="155" width="190" height="55" rx="6" fill="#0f172a" stroke="#334155" />
+        <text x="110" y="176" text-anchor="middle" class="text-title" font-size="11">Web Bluetooth API</text>
+        <text x="110" y="195" text-anchor="middle" class="text-subtitle">navigator.bluetooth</text>
+
+        <!-- Arrows: Client to Bridge -->
+        <path d="M 220 70 L 275 70" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)" />
+        <path d="M 275 90 L 220 90" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)" />
+        <text x="248" y="62" text-anchor="middle" class="text-label" font-size="9">REST</text>
+        <text x="248" y="105" text-anchor="middle" class="text-label" font-size="9">SSE</text>
+
+        <!-- Tier 2: Server Bridge -->
+        <rect x="280" y="0" width="210" height="230" rx="8" fill="#1e293b" stroke="#10b981" stroke-width="1.5" />
+        <rect x="280" y="0" width="210" height="32" rx="8" fill="#059669" />
+        <text x="385" y="21" text-anchor="middle" class="text-title" font-size="12">SIMULATION BRIDGE</text>
+        <rect x="295" y="45" width="180" height="50" rx="6" fill="#0f172a" stroke="#334155" />
+        <text x="385" y="67" text-anchor="middle" class="text-title" font-size="11">Zero-Dep HTTP Server</text>
+        <text x="385" y="83" text-anchor="middle" class="text-subtitle">simulator/server.js (:3333)</text>
+
+        <rect x="295" y="105" width="180" height="50" rx="6" fill="#0f172a" stroke="#334155" />
+        <text x="385" y="127" text-anchor="middle" class="text-title" font-size="11">Server-Sent Events</text>
+        <text x="385" y="143" text-anchor="middle" class="text-subtitle">/api/events (Live Stream)</text>
+
+        <rect x="295" y="165" width="180" height="50" rx="6" fill="#0f172a" stroke="#334155" />
+        <text x="385" y="187" text-anchor="middle" class="text-title" font-size="11">GATT REST Endpoints</text>
+        <text x="385" y="203" text-anchor="middle" class="text-subtitle">/api/gatt/read &amp; write</text>
+
+        <!-- Arrows: Bridge to Peripheral -->
+        <path d="M 490 80 L 535 80" stroke="#10b981" stroke-width="2" marker-end="url(#arrow)" />
+        <path d="M 535 120 L 490 120" stroke="#10b981" stroke-width="2" marker-end="url(#arrow)" />
+
+        <!-- Tier 3: Peripheral & Telemetry -->
+        <rect x="540" y="0" width="200" height="230" rx="8" fill="#1e293b" stroke="#a855f7" stroke-width="1.5" />
+        <rect x="540" y="0" width="200" height="32" rx="8" fill="#7e22ce" />
+        <text x="640" y="21" text-anchor="middle" class="text-title" font-size="12">PERIPHERAL &amp; TELEMETRY</text>
+        <rect x="555" y="45" width="170" height="50" rx="6" fill="#0f172a" stroke="#334155" />
+        <text x="640" y="67" text-anchor="middle" class="text-title" font-size="11">Simulated GATT DB</text>
+        <text x="640" y="83" text-anchor="middle" class="text-subtitle">0x1800, 0x180F, 0x180D</text>
+
+        <rect x="555" y="105" width="170" height="50" rx="6" fill="#0f172a" stroke="#334155" />
+        <text x="640" y="127" text-anchor="middle" class="text-title" font-size="11">Telemetry Engine</text>
+        <text x="640" y="143" text-anchor="middle" class="text-subtitle">simulator/telemetry.js</text>
+
+        <rect x="555" y="165" width="170" height="50" rx="6" fill="#0f172a" stroke="#334155" />
+        <text x="640" y="187" text-anchor="middle" class="text-title" font-size="11">Vector Plotter</text>
+        <text x="640" y="203" text-anchor="middle" class="text-subtitle">scripts/generate-plots.js</text>
+
+        <!-- Tier 4: Hardware Track (Bottom) -->
+        <rect x="150" y="255" width="440" height="70" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5" />
+        <rect x="150" y="255" width="440" height="24" rx="8" fill="#b45309" />
+        <text x="370" y="271" text-anchor="middle" class="text-title" font-size="11">OPTIONAL HARDWARE TRACK (ESP32)</text>
+        <text x="370" y="295" text-anchor="middle" class="text-title" font-size="11">Physical BLE Peripheral &bull; hardware/esp32/ble_peripheral.ino</text>
+        <text x="370" y="312" text-anchor="middle" class="text-subtitle">Pairs with Web Bluetooth Client via Physical 2.4 GHz GFSK Radio</text>
+
+        <!-- Hardware link to Web Bluetooth -->
+        <path d="M 150 290 L 110 290 L 110 215" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4" marker-end="url(#arrow)" />
+        <text x="80" y="260" text-anchor="middle" class="text-label" font-size="9" fill="#f59e0b">Real BLE</text>
+      </g>
+    `;
+  } else if (name === 'gatt-hierarchy') {
+    bodySvg = `
+      <g transform="translate(40, 75)">
+        <!-- Top Profile -->
+        <rect x="250" y="0" width="240" height="38" rx="6" fill="#0284c7" stroke="#38bdf8" />
+        <text x="370" y="24" text-anchor="middle" class="text-title" font-size="13">Heart Rate Profile (HRP)</text>
+
+        <!-- Connecting lines -->
+        <path d="M 370 38 L 370 65 L 80 65 L 80 85" stroke="#38bdf8" stroke-width="1.5" />
+        <path d="M 370 65 L 260 65 L 260 85" stroke="#38bdf8" stroke-width="1.5" />
+        <path d="M 370 65 L 480 65 L 480 85" stroke="#38bdf8" stroke-width="1.5" />
+        <path d="M 370 65 L 660 65 L 660 85" stroke="#38bdf8" stroke-width="1.5" />
+
+        <!-- 4 Services -->
+        <rect x="5" y="85" width="150" height="45" rx="6" fill="#1e293b" stroke="#10b981" />
+        <text x="80" y="104" text-anchor="middle" class="text-title" font-size="11">Generic Access</text>
+        <text x="80" y="120" text-anchor="middle" class="text-subtitle">0x1800 (SIG Standard)</text>
+
+        <rect x="185" y="85" width="150" height="45" rx="6" fill="#1e293b" stroke="#10b981" />
+        <text x="260" y="104" text-anchor="middle" class="text-title" font-size="11">Battery Service</text>
+        <text x="260" y="120" text-anchor="middle" class="text-subtitle">0x180F (SIG Standard)</text>
+
+        <rect x="385" y="85" width="190" height="45" rx="6" fill="#1e293b" stroke="#10b981" stroke-width="2" />
+        <text x="480" y="104" text-anchor="middle" class="text-title" font-size="11">Heart Rate Service</text>
+        <text x="480" y="120" text-anchor="middle" class="text-subtitle">0x180D (Primary Target)</text>
+
+        <rect x="595" y="85" width="140" height="45" rx="6" fill="#1e293b" stroke="#a855f7" />
+        <text x="665" y="104" text-anchor="middle" class="text-title" font-size="11">Custom Control</text>
+        <text x="665" y="120" text-anchor="middle" class="text-subtitle">0xFFF0 (128-bit Vendor)</text>
+
+        <!-- Characteristics -->
+        <!-- Under Generic Access -->
+        <path d="M 80 130 L 80 160" stroke="#64748b" stroke-width="1.5" />
+        <rect x="5" y="160" width="150" height="48" rx="6" fill="#0f172a" stroke="#334155" />
+        <text x="80" y="180" text-anchor="middle" class="text-title" font-size="10">Device Name (0x2A00)</text>
+        <text x="80" y="196" text-anchor="middle" class="text-subtitle">[READ] 'PulseGlow BLE'</text>
+
+        <!-- Under Battery -->
+        <path d="M 260 130 L 260 160" stroke="#64748b" stroke-width="1.5" />
+        <rect x="185" y="160" width="150" height="48" rx="6" fill="#0f172a" stroke="#334155" />
+        <text x="260" y="180" text-anchor="middle" class="text-title" font-size="10">Battery Level (0x2A19)</text>
+        <text x="260" y="196" text-anchor="middle" class="text-subtitle">[READ, NOTIFY] 92%</text>
+
+        <!-- Under Heart Rate -->
+        <path d="M 450 130 L 450 160" stroke="#64748b" stroke-width="1.5" />
+        <rect x="360" y="160" width="175" height="48" rx="6" fill="#0f172a" stroke="#38bdf8" />
+        <text x="447" y="180" text-anchor="middle" class="text-title" font-size="10">HR Measurement (0x2A37)</text>
+        <text x="447" y="196" text-anchor="middle" class="text-subtitle">[NOTIFY] Flags, BPM, RR</text>
+
+        <path d="M 545 130 L 545 160" stroke="#64748b" stroke-width="1.5" />
+        <rect x="540" y="160" width="100" height="48" rx="6" fill="#0f172a" stroke="#334155" />
+        <text x="590" y="180" text-anchor="middle" class="text-title" font-size="10">Location (0x2A38)</text>
+        <text x="590" y="196" text-anchor="middle" class="text-subtitle">[READ] 1=Chest</text>
+
+        <!-- Under Custom -->
+        <path d="M 665 130 L 665 160" stroke="#64748b" stroke-width="1.5" />
+        <rect x="645" y="160" width="95" height="48" rx="6" fill="#0f172a" stroke="#334155" />
+        <text x="692" y="180" text-anchor="middle" class="text-title" font-size="10">Mode (0xFFF1)</text>
+        <text x="692" y="196" text-anchor="middle" class="text-subtitle">[WRITE] 0-2</text>
+
+        <!-- CCCD Descriptors -->
+        <path d="M 447 208 L 447 240" stroke="#f59e0b" stroke-width="1.5" />
+        <rect x="350" y="240" width="195" height="42" rx="6" fill="#1e293b" stroke="#f59e0b" />
+        <text x="447" y="258" text-anchor="middle" class="text-title" font-size="10" fill="#f59e0b">CCCD Descriptor (0x2902)</text>
+        <text x="447" y="272" text-anchor="middle" class="text-subtitle">Write 0x0001 to enable streaming</text>
+      </g>
+    `;
+  } else if (name === 'connection-sequence') {
+    bodySvg = `
+      <g transform="translate(50, 75)">
+        <!-- Lifelines -->
+        <rect x="50" y="0" width="180" height="32" rx="6" fill="#0284c7" />
+        <text x="140" y="21" text-anchor="middle" class="text-title" font-size="12">CENTRAL (Web Client)</text>
+        <line x1="140" y1="32" x2="140" y2="330" stroke="#334155" stroke-dasharray="4" />
+
+        <rect x="490" y="0" width="180" height="32" rx="6" fill="#059669" />
+        <text x="580" y="21" text-anchor="middle" class="text-title" font-size="12">PERIPHERAL (Sensor)</text>
+        <line x1="580" y1="32" x2="580" y2="330" stroke="#334155" stroke-dasharray="4" />
+
+        <!-- 1. ADV_IND -->
+        <path d="M 580 60 L 145 60" stroke="#38bdf8" stroke-width="1.8" marker-end="url(#arrow)" />
+        <text x="360" y="53" text-anchor="middle" class="text-label" font-size="10">1. ADV_IND (Heart Rate 0x180D, RSSI -64 dBm) [CH 37, 38, 39]</text>
+
+        <!-- 2. CONNECT_IND -->
+        <path d="M 140 95 L 575 95" stroke="#a855f7" stroke-width="1.8" marker-end="url(#arrow)" />
+        <text x="360" y="88" text-anchor="middle" class="text-label" font-size="10">2. CONNECT_IND (Interval 20ms, Latency 0, Timeout 4s)</text>
+
+        <!-- 3. MTU Exchange -->
+        <path d="M 140 130 L 575 130" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrow)" />
+        <text x="360" y="123" text-anchor="middle" class="text-label" font-size="10">3. ATT_EXCHANGE_MTU_REQ (Client MTU: 247)</text>
+        <path d="M 580 150 L 145 150" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrow)" />
+        <text x="360" y="145" text-anchor="middle" class="text-label" font-size="10">4. ATT_EXCHANGE_MTU_RSP (Server MTU: 247)</text>
+
+        <!-- 4. Read Battery -->
+        <path d="M 140 185 L 575 185" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrow)" />
+        <text x="360" y="178" text-anchor="middle" class="text-label" font-size="10">5. ATT_READ_REQ [Handle 0x2A19: Battery Level]</text>
+        <path d="M 580 205 L 145 205" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrow)" />
+        <text x="360" y="200" text-anchor="middle" class="text-label" font-size="10">6. ATT_READ_RSP [Value: 0x5C = 92%]</text>
+
+        <!-- 5. CCCD Write -->
+        <path d="M 140 240 L 575 240" stroke="#f59e0b" stroke-width="1.8" marker-end="url(#arrow)" />
+        <text x="360" y="233" text-anchor="middle" class="text-label" font-size="10" fill="#f59e0b">7. ATT_WRITE_REQ [Handle 0x2902 (CCCD) = 0x0001 (Enable Notify)]</text>
+        <path d="M 580 260 L 145 260" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#arrow)" />
+        <text x="360" y="255" text-anchor="middle" class="text-label" font-size="10">8. ATT_WRITE_RSP [Write Success]</text>
+
+        <!-- 6. Notifications Stream -->
+        <rect x="110" y="275" width="500" height="42" rx="4" fill="rgba(244, 63, 94, 0.12)" stroke="#f43f5e" stroke-dasharray="3" />
+        <path d="M 580 295 L 145 295" stroke="#f43f5e" stroke-width="2" marker-end="url(#arrow)" />
+        <text x="360" y="291" text-anchor="middle" class="text-label" font-size="10" fill="#f43f5e">9. ATT_HANDLE_VALUE_NTF [0x2A37: Flags, BPM=74, RR=820ms] (Live Stream)</text>
+        <text x="360" y="307" text-anchor="middle" class="text-subtitle">Repeats every 1000ms &bull; Zero client polling overhead</text>
+      </g>
+    `;
+  } else if (name === 'advertising-connection-timeline') {
+    bodySvg = `
+      <g transform="translate(40, 75)">
+        <!-- Track 1: Advertising -->
+        <rect x="0" y="0" width="740" height="110" rx="8" fill="#1e293b" stroke="#38bdf8" />
+        <text x="20" y="25" class="text-title" font-size="12">PHASE 1: PERIODIC ADVERTISING (Asynchronous Radio Bursts)</text>
+
+        <rect x="20" y="45" width="130" height="45" rx="4" fill="#0f172a" stroke="#64748b" />
+        <text x="85" y="65" text-anchor="middle" class="text-title" font-size="10">Deep Sleep</text>
+        <text x="85" y="80" text-anchor="middle" class="text-subtitle">~98 ms (&lt; 2 &mu;A)</text>
+
+        <path d="M 150 67 L 175 67" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrow)" />
+
+        <rect x="180" y="45" width="75" height="45" rx="4" fill="#0284c7" />
+        <text x="217" y="65" text-anchor="middle" class="text-title" font-size="10">CH 37</text>
+        <text x="217" y="80" text-anchor="middle" class="text-subtitle">2402 MHz</text>
+
+        <text x="272" y="70" text-anchor="middle" class="text-subtitle" font-size="9">150 &mu;s</text>
+
+        <rect x="290" y="45" width="75" height="45" rx="4" fill="#059669" />
+        <text x="327" y="65" text-anchor="middle" class="text-title" font-size="10">CH 38</text>
+        <text x="327" y="80" text-anchor="middle" class="text-subtitle">2426 MHz</text>
+
+        <text x="382" y="70" text-anchor="middle" class="text-subtitle" font-size="9">150 &mu;s</text>
+
+        <rect x="400" y="45" width="75" height="45" rx="4" fill="#7e22ce" />
+        <text x="437" y="65" text-anchor="middle" class="text-title" font-size="10">CH 39</text>
+        <text x="437" y="80" text-anchor="middle" class="text-subtitle">2480 MHz</text>
+
+        <path d="M 475 67 L 515 67" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrow)" />
+
+        <rect x="520" y="45" width="200" height="45" rx="4" fill="#0f172a" stroke="#64748b" />
+        <text x="620" y="65" text-anchor="middle" class="text-title" font-size="10">Deep Sleep until next event</text>
+        <text x="620" y="80" text-anchor="middle" class="text-subtitle">Total On-Air Time &lt; 2.5 ms (97.5% Sleep!)</text>
+
+        <!-- Downward Handshake Arrow -->
+        <path d="M 437 90 L 437 130" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)" />
+        <text x="495" y="115" class="text-label" font-size="10" fill="#f59e0b">CONNECT_IND</text>
+
+        <!-- Track 2: Connected Events -->
+        <rect x="0" y="140" width="740" height="135" rx="8" fill="#1e293b" stroke="#10b981" />
+        <text x="20" y="165" class="text-title" font-size="12">PHASE 2: SYNCHRONIZED CONNECTION EVENTS (Frequency Hopping FHSS)</text>
+
+        <rect x="20" y="185" width="100" height="60" rx="4" fill="#0f172a" stroke="#10b981" />
+        <text x="70" y="210" text-anchor="middle" class="text-title" font-size="10">Anchor Point</text>
+        <text x="70" y="225" text-anchor="middle" class="text-subtitle">t = 0.0 ms</text>
+
+        <path d="M 120 215 L 145 215" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrow)" />
+
+        <rect x="150" y="185" width="110" height="60" rx="4" fill="#0284c7" />
+        <text x="205" y="210" text-anchor="middle" class="text-title" font-size="10">Central TX</text>
+        <text x="205" y="225" text-anchor="middle" class="text-subtitle">Data CH n (0-36)</text>
+
+        <text x="282" y="218" text-anchor="middle" class="text-subtitle" font-size="9">150 &mu;s T_IFS</text>
+
+        <rect x="305" y="185" width="110" height="60" rx="4" fill="#059669" />
+        <text x="360" y="210" text-anchor="middle" class="text-title" font-size="10">Peripheral RX/TX</text>
+        <text x="360" y="225" text-anchor="middle" class="text-subtitle">Data reply / ACK</text>
+
+        <path d="M 415 215 L 445 215" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrow)" />
+
+        <rect x="450" y="185" width="140" height="60" rx="4" fill="#0f172a" stroke="#64748b" />
+        <text x="520" y="210" text-anchor="middle" class="text-title" font-size="10">Radio Sleep</text>
+        <text x="520" y="225" text-anchor="middle" class="text-subtitle">Wait for next interval</text>
+
+        <path d="M 590 215 L 615 215" stroke="#10b981" stroke-width="1.5" marker-end="url(#arrow)" />
+
+        <rect x="620" y="185" width="105" height="60" rx="4" fill="#0f172a" stroke="#10b981" />
+        <text x="672" y="210" text-anchor="middle" class="text-title" font-size="10">Next Event</text>
+        <text x="672" y="225" text-anchor="middle" class="text-subtitle">t = 20.0 ms (Hop!)</text>
       </g>
     `;
   }
