@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 460" width="820" height="460">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#38bdf8" />
+    </marker>
+  </defs>
+  <style>
+    .bg { fill: #0f172a; }
+    .text-title { font-family: system-ui, sans-serif; font-weight: 700; fill: #f8fafc; }
+    .text-subtitle { font-family: system-ui, sans-serif; font-size: 11px; fill: #94a3b8; }
+    .text-label { font-family: ui-monospace, monospace; font-size: 11px; fill: #94a3b8; }
+  </style>
+  <rect width="820" height="460" rx="10" class="bg" />
+  <text x="40" y="34" class="text-title">Connection & Subscription Handshake</text>
+  <text x="40" y="50" class="text-subtitle">BLE Demystified Architecture Series &bull; docs/diagrams/connection-sequence.mmd</text>
+  
+      <g transform="translate(60, 80)">
+        <rect x="0" y="0" width="700" height="280" rx="8" fill="#1e293b" stroke="#334155" />
+        <text x="350" y="40" text-anchor="middle" class="text-title">Connection & Subscription Handshake</text>
+        <foreignObject x="30" y="70" width="640" height="190">
+          <pre xmlns="http://www.w3.org/1999/xhtml" style="color: #94a3b8; font-family: monospace; font-size: 11px; white-space: pre-wrap; line-height: 1.5;">sequenceDiagram
+    autonumber
+    actor User as User / App
+    participant Central as Central (Web Client)
+    participant Peripheral as Peripheral (Sensor)
+
+    Note over Peripheral: GAP: Advertising on CH 37, 38, 39
+    Peripheral->>Central: ADV_IND (Heart Rate 0x180D, RSSI -64dBm)
+    User->>Central: Click Connect
+    Central->>Peripheral: CONNECT_IND (Interval 20ms, Latency 0, Timeout 4s)
+    Note over Central,Peripheral: Jump to Data Channels (FHSS Locked)
+
+    Central->>Peripheral: ATT_EXCHANGE_MTU_REQ (Client MTU: 247)
+    Peripheral->>Central: ATT_EXCHANGE_MTU_RSP (Server MTU: 247)
+
+    Central->>Peripheral: ATT_READ_REQ [Handle 0x2A19: Battery Level]
+    Peripheral->>Central: ATT_READ_RSP [Value: 0x5C (92%)]
+
+    Central->>Peripheral: ATT_WRITE_REQ [Handle 0x2902: CCCD = 0x0001]
+    Peripheral->>Central: ATT_WRITE_RSP [Write Success]
+
+    loop Every 1000ms (Stream)
+        Peripheral->>Central: ATT_HANDLE_VALUE_NTF [0x2A37: Flags, BPM, RR]
+        Note over Central: Live ECG Waveform Chart Updated!
+    end</pre>
+        </foreignObject>
+      </g>
+    
+</svg>
