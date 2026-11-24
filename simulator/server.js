@@ -436,7 +436,12 @@ class SimulatedGattServer {
 
   serveStaticFile(urlPath, res) {
     const rootDir = path.resolve(__dirname, '..');
-    let filePath = path.join(rootDir, urlPath === '/' ? 'web/index.html' : urlPath);
+    let filePath = path.join(rootDir, urlPath === '/' ? 'index.html' : urlPath);
+
+    // If directory requested, default to index.html within that directory
+    if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
+      filePath = path.join(filePath, 'index.html');
+    }
 
     // Prevent directory traversal
     if (!filePath.startsWith(rootDir)) {
