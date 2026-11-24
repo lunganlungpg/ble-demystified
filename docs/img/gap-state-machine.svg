@@ -13,7 +13,7 @@
   </style>
   <rect width="820" height="460" rx="10" class="bg" />
   <text x="40" y="34" class="text-title">GAP State Machine</text>
-  <text x="40" y="50" class="text-subtitle">BLE Demystified Architecture Series &bull; docs/diagrams/gap-state-machine.mmd</text>
+  <text x="40" y="50" class="text-subtitle">BLE Demystified Architecture Series &#8226; docs/diagrams/gap-state-machine.mmd</text>
   
       <g transform="translate(60, 80)">
         <rect x="0" y="0" width="160" height="60" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="2" />

@@ -12,8 +12,8 @@
     .text-label { font-family: ui-monospace, monospace; font-size: 11px; fill: #94a3b8; }
   </style>
   <rect width="820" height="460" rx="10" class="bg" />
-  <text x="40" y="34" class="text-title">Connection & Subscription Handshake</text>
-  <text x="40" y="50" class="text-subtitle">BLE Demystified Architecture Series &bull; docs/diagrams/connection-sequence.mmd</text>
+  <text x="40" y="34" class="text-title">Connection &amp; Subscription Handshake</text>
+  <text x="40" y="50" class="text-subtitle">BLE Demystified Architecture Series &#8226; docs/diagrams/connection-sequence.mmd</text>
   
       <g transform="translate(50, 75)">
         <!-- Lifelines -->
@@ -55,7 +55,7 @@
         <rect x="110" y="275" width="500" height="42" rx="4" fill="rgba(244, 63, 94, 0.12)" stroke="#f43f5e" stroke-dasharray="3" />
         <path d="M 580 295 L 145 295" stroke="#f43f5e" stroke-width="2" marker-end="url(#arrow)" />
         <text x="360" y="291" text-anchor="middle" class="text-label" font-size="10" fill="#f43f5e">9. ATT_HANDLE_VALUE_NTF [0x2A37: Flags, BPM=74, RR=820ms] (Live Stream)</text>
-        <text x="360" y="307" text-anchor="middle" class="text-subtitle">Repeats every 1000ms &bull; Zero client polling overhead</text>
+        <text x="360" y="307" text-anchor="middle" class="text-subtitle">Repeats every 1000ms &#8226; Zero client polling overhead</text>
       </g>
     
 </svg>

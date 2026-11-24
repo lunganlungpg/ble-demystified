@@ -36,6 +36,11 @@ console.log(`[Generator] Loaded ${timeSeries.length} points from ${DATA_PATH}`);
 // =========================================================================
 // SVG HELPER PRIMITIVES
 // =========================================================================
+function escapeXml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
 function createSvgWrapper(width, height, title, content) {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}">
@@ -54,8 +59,8 @@ function createSvgWrapper(width, height, title, content) {
   </style>
   <rect width="${width}" height="${height}" rx="10" class="bg" />
   <!-- Header -->
-  <text x="40" y="34" class="text-title">${title}</text>
-  <text x="40" y="50" class="text-subtitle">BLE Demystified Telemetry Engine &bull; Link Layer Capture</text>
+  <text x="40" y="34" class="text-title">${escapeXml(title)}</text>
+  <text x="40" y="50" class="text-subtitle">BLE Demystified Telemetry Engine &#8226; Link Layer Capture</text>
   ${content}
 </svg>`;
 }
@@ -186,7 +191,7 @@ function generatePlotJitterHistogram() {
     <g transform="translate(${padLeft + step * 1.5}, ${padTop + 30})">
       <rect width="210" height="48" rx="6" fill="#1e293b" stroke="#38bdf8" />
       <text x="12" y="20" class="text-label" fill="#38bdf8" font-weight="bold">Connection Interval Peak (20ms)</text>
-      <text x="12" y="36" class="text-subtitle">Clock drift jitter: &plusmn;0.8 ms</text>
+      <text x="12" y="36" class="text-subtitle">Clock drift jitter: &#177;0.8 ms</text>
     </g>
   `;
 
@@ -344,7 +349,7 @@ function generatePlotPacketTimeline() {
     rowsSvg += `
       <text x="${padLeft - 12}" y="${y + 17}" text-anchor="end" class="text-label" font-weight="600">${p.phase}</text>
       <rect x="${startX}" y="${y}" width="${durW}" height="${rowH}" rx="4" fill="${barColor}" opacity="0.9" />
-      <text x="${startX + durW + 8}" y="${y + 17}" class="text-subtitle">${p.durationMs}ms &bull; ${p.channel}</text>
+      <text x="${startX + durW + 8}" y="${y + 17}" class="text-subtitle">${p.durationMs}ms &#8226; ${p.channel}</text>
     `;
   });
 
@@ -594,22 +599,22 @@ function renderDiagramSvg(name, info) {
     bodySvg = `
       <g transform="translate(60, 75)">
         <rect x="0" y="0" width="700" height="50" rx="6" fill="#1e293b" stroke="#38bdf8" />
-        <text x="350" y="30" text-anchor="middle" class="text-title" font-size="13">APPLICATION &bull; Web Bluetooth API / Fitness App</text>
+        <text x="350" y="30" text-anchor="middle" class="text-title" font-size="13">APPLICATION &#8226; Web Bluetooth API / Fitness App</text>
 
         <rect x="0" y="60" width="700" height="50" rx="6" fill="#1e293b" stroke="#10b981" />
-        <text x="350" y="90" text-anchor="middle" class="text-title" font-size="13">GATT / GAP &bull; Services, Characteristics, Roles (0x180D, 0x180F)</text>
+        <text x="350" y="90" text-anchor="middle" class="text-title" font-size="13">GATT / GAP &#8226; Services, Characteristics, Roles (0x180D, 0x180F)</text>
 
         <rect x="0" y="120" width="700" height="50" rx="6" fill="#1e293b" stroke="#a855f7" />
-        <text x="350" y="150" text-anchor="middle" class="text-title" font-size="13">ATT &bull; Attribute Protocol (Read, Write, Notify, MTU 23-247)</text>
+        <text x="350" y="150" text-anchor="middle" class="text-title" font-size="13">ATT &#8226; Attribute Protocol (Read, Write, Notify, MTU 23-247)</text>
 
         <rect x="0" y="180" width="700" height="50" rx="6" fill="#1e293b" stroke="#f59e0b" />
-        <text x="350" y="210" text-anchor="middle" class="text-title" font-size="13">L2CAP &bull; Logical Link Control and Adaptation Protocol</text>
+        <text x="350" y="210" text-anchor="middle" class="text-title" font-size="13">L2CAP &#8226; Logical Link Control and Adaptation Protocol</text>
 
         <rect x="0" y="240" width="700" height="50" rx="6" fill="#1e293b" stroke="#38bdf8" />
-        <text x="350" y="270" text-anchor="middle" class="text-title" font-size="13">LINK LAYER &bull; State Machine, FHSS (37 Data Channels), Timing Anchor</text>
+        <text x="350" y="270" text-anchor="middle" class="text-title" font-size="13">LINK LAYER &#8226; State Machine, FHSS (37 Data Channels), Timing Anchor</text>
 
         <rect x="0" y="300" width="700" height="50" rx="6" fill="#1e293b" stroke="#64748b" />
-        <text x="350" y="330" text-anchor="middle" class="text-title" font-size="13">PHYSICAL LAYER (PHY) &bull; 2.4 GHz GFSK Radio, 1 Mbps</text>
+        <text x="350" y="330" text-anchor="middle" class="text-title" font-size="13">PHYSICAL LAYER (PHY) &#8226; 2.4 GHz GFSK Radio, 1 Mbps</text>
       </g>
     `;
   } else if (name === 'system-components') {
@@ -677,7 +682,7 @@ function renderDiagramSvg(name, info) {
         <rect x="150" y="255" width="440" height="70" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5" />
         <rect x="150" y="255" width="440" height="24" rx="8" fill="#b45309" />
         <text x="370" y="271" text-anchor="middle" class="text-title" font-size="11">OPTIONAL HARDWARE TRACK (ESP32)</text>
-        <text x="370" y="295" text-anchor="middle" class="text-title" font-size="11">Physical BLE Peripheral &bull; hardware/esp32/ble_peripheral.ino</text>
+        <text x="370" y="295" text-anchor="middle" class="text-title" font-size="11">Physical BLE Peripheral &#8226; hardware/esp32/ble_peripheral.ino</text>
         <text x="370" y="312" text-anchor="middle" class="text-subtitle">Pairs with Web Bluetooth Client via Physical 2.4 GHz GFSK Radio</text>
 
         <!-- Hardware link to Web Bluetooth -->
@@ -794,7 +799,7 @@ function renderDiagramSvg(name, info) {
         <rect x="110" y="275" width="500" height="42" rx="4" fill="rgba(244, 63, 94, 0.12)" stroke="#f43f5e" stroke-dasharray="3" />
         <path d="M 580 295 L 145 295" stroke="#f43f5e" stroke-width="2" marker-end="url(#arrow)" />
         <text x="360" y="291" text-anchor="middle" class="text-label" font-size="10" fill="#f43f5e">9. ATT_HANDLE_VALUE_NTF [0x2A37: Flags, BPM=74, RR=820ms] (Live Stream)</text>
-        <text x="360" y="307" text-anchor="middle" class="text-subtitle">Repeats every 1000ms &bull; Zero client polling overhead</text>
+        <text x="360" y="307" text-anchor="middle" class="text-subtitle">Repeats every 1000ms &#8226; Zero client polling overhead</text>
       </g>
     `;
   } else if (name === 'advertising-connection-timeline') {
@@ -806,7 +811,7 @@ function renderDiagramSvg(name, info) {
 
         <rect x="20" y="45" width="130" height="45" rx="4" fill="#0f172a" stroke="#64748b" />
         <text x="85" y="65" text-anchor="middle" class="text-title" font-size="10">Deep Sleep</text>
-        <text x="85" y="80" text-anchor="middle" class="text-subtitle">~98 ms (&lt; 2 &mu;A)</text>
+        <text x="85" y="80" text-anchor="middle" class="text-subtitle">~98 ms (&lt; 2 &#956;A)</text>
 
         <path d="M 150 67 L 175 67" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrow)" />
 
@@ -814,13 +819,13 @@ function renderDiagramSvg(name, info) {
         <text x="217" y="65" text-anchor="middle" class="text-title" font-size="10">CH 37</text>
         <text x="217" y="80" text-anchor="middle" class="text-subtitle">2402 MHz</text>
 
-        <text x="272" y="70" text-anchor="middle" class="text-subtitle" font-size="9">150 &mu;s</text>
+        <text x="272" y="70" text-anchor="middle" class="text-subtitle" font-size="9">150 &#956;s</text>
 
         <rect x="290" y="45" width="75" height="45" rx="4" fill="#059669" />
         <text x="327" y="65" text-anchor="middle" class="text-title" font-size="10">CH 38</text>
         <text x="327" y="80" text-anchor="middle" class="text-subtitle">2426 MHz</text>
 
-        <text x="382" y="70" text-anchor="middle" class="text-subtitle" font-size="9">150 &mu;s</text>
+        <text x="382" y="70" text-anchor="middle" class="text-subtitle" font-size="9">150 &#956;s</text>
 
         <rect x="400" y="45" width="75" height="45" rx="4" fill="#7e22ce" />
         <text x="437" y="65" text-anchor="middle" class="text-title" font-size="10">CH 39</text>
@@ -850,7 +855,7 @@ function renderDiagramSvg(name, info) {
         <text x="205" y="210" text-anchor="middle" class="text-title" font-size="10">Central TX</text>
         <text x="205" y="225" text-anchor="middle" class="text-subtitle">Data CH n (0-36)</text>
 
-        <text x="282" y="218" text-anchor="middle" class="text-subtitle" font-size="9">150 &mu;s T_IFS</text>
+        <text x="282" y="218" text-anchor="middle" class="text-subtitle" font-size="9">150 &#956;s T_IFS</text>
 
         <rect x="305" y="185" width="110" height="60" rx="4" fill="#059669" />
         <text x="360" y="210" text-anchor="middle" class="text-title" font-size="10">Peripheral RX/TX</text>
@@ -885,8 +890,8 @@ function renderDiagramSvg(name, info) {
     .text-label { font-family: ui-monospace, monospace; font-size: 11px; fill: #94a3b8; }
   </style>
   <rect width="${w}" height="${h}" rx="10" class="bg" />
-  <text x="40" y="34" class="text-title">${info.title}</text>
-  <text x="40" y="50" class="text-subtitle">BLE Demystified Architecture Series &bull; docs/diagrams/${name}.mmd</text>
+  <text x="40" y="34" class="text-title">${escapeXml(info.title)}</text>
+  <text x="40" y="50" class="text-subtitle">BLE Demystified Architecture Series &#8226; docs/diagrams/${name}.mmd</text>
   ${bodySvg}
 </svg>`;
 

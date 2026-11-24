@@ -12,8 +12,8 @@
     .text-label { font-family: ui-monospace, monospace; font-size: 11px; fill: #94a3b8; }
   </style>
   <rect width="820" height="460" rx="10" class="bg" />
-  <text x="40" y="34" class="text-title">Repository Architecture & Data Flow</text>
-  <text x="40" y="50" class="text-subtitle">BLE Demystified Architecture Series &bull; docs/diagrams/system-components.mmd</text>
+  <text x="40" y="34" class="text-title">Repository Architecture &amp; Data Flow</text>
+  <text x="40" y="50" class="text-subtitle">BLE Demystified Architecture Series &#8226; docs/diagrams/system-components.mmd</text>
   
       <g transform="translate(40, 75)">
         <!-- Tier 1: Client -->
@@ -78,7 +78,7 @@
         <rect x="150" y="255" width="440" height="70" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5" />
         <rect x="150" y="255" width="440" height="24" rx="8" fill="#b45309" />
         <text x="370" y="271" text-anchor="middle" class="text-title" font-size="11">OPTIONAL HARDWARE TRACK (ESP32)</text>
-        <text x="370" y="295" text-anchor="middle" class="text-title" font-size="11">Physical BLE Peripheral &bull; hardware/esp32/ble_peripheral.ino</text>
+        <text x="370" y="295" text-anchor="middle" class="text-title" font-size="11">Physical BLE Peripheral &#8226; hardware/esp32/ble_peripheral.ino</text>
         <text x="370" y="312" text-anchor="middle" class="text-subtitle">Pairs with Web Bluetooth Client via Physical 2.4 GHz GFSK Radio</text>
 
         <!-- Hardware link to Web Bluetooth -->

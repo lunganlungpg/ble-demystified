@@ -16,7 +16,7 @@
   <rect width="780" height="380" rx="10" class="bg" />
   <!-- Header -->
   <text x="40" y="34" class="text-title">Effective Data Throughput vs. ATT MTU Size</text>
-  <text x="40" y="50" class="text-subtitle">BLE Demystified Telemetry Engine &bull; Link Layer Capture</text>
+  <text x="40" y="50" class="text-subtitle">BLE Demystified Telemetry Engine &#8226; Link Layer Capture</text>
   
     <line x1="70" y1="325" x2="740" y2="325" class="grid" /><text x="60" y="329" text-anchor="end" class="text-label">0 kbps</text><line x1="70" y1="268.1818181818182" x2="740" y2="268.1818181818182" class="grid" /><text x="60" y="272.1818181818182" text-anchor="end" class="text-label">25 kbps</text><line x1="70" y1="211.36363636363637" x2="740" y2="211.36363636363637" class="grid" /><text x="60" y="215.36363636363637" text-anchor="end" class="text-label">50 kbps</text><line x1="70" y1="154.54545454545456" x2="740" y2="154.54545454545456" class="grid" /><text x="60" y="158.54545454545456" text-anchor="end" class="text-label">75 kbps</text><line x1="70" y1="97.72727272727275" x2="740" y2="97.72727272727275" class="grid" /><text x="60" y="101.72727272727275" text-anchor="end" class="text-label">100 kbps</text>
     <line x1="70" y1="325" x2="740" y2="325" class="axis" />
