@@ -1,0 +1,8 @@
+# The simulator serves web/, explainer/, docs/ and data/ from the repo root,
+# so those stay in; git metadata, tests and hardware sketches are not needed.
+.git
+.github
+node_modules
+tests
+hardware
+scripts

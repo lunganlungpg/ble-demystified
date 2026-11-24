@@ -22,6 +22,7 @@ This repository breaks down the entire BLE protocol stack from **2.4 GHz radio c
 ## Table of Contents
 - [Architecture at a Glance](#architecture-at-a-glance)
 - [Quickstart in 3 Commands](#quickstart-in-3-commands)
+- [Run with Docker (GitHub Packages)](#run-with-docker-github-packages)
 - [Interactive Explainer Walkthrough](#interactive-explainer-walkthrough)
 - [Visual Protocol Guide & Telemetry Plots](#visual-protocol-guide--telemetry-plots)
 - [The 6-Step Web Bluetooth Demo](#the-6-step-web-bluetooth-demo)
@@ -60,6 +61,19 @@ node server.js
 ```
 
 Click **"▶ Run Full 6-Step Handshake"** in the web client to watch discovery, connection, reading battery, writing controls, and live heart rate streaming in action!
+
+---
+
+## Run with Docker (GitHub Packages)
+
+Don't want to install Node.js? The simulator, web client and explainer are published as a container image on [GitHub Packages](https://github.com/lunganlungpg/ble-demystified/pkgs/container/ble-demystified):
+
+```bash
+docker run --rm -p 3333:3333 ghcr.io/lunganlungpg/ble-demystified
+# then open http://localhost:3333/web/ and http://localhost:3333/explainer/
+```
+
+The image is rebuilt by [`.github/workflows/publish-packages.yml`](.github/workflows/publish-packages.yml) on every push to `main` (tag `latest`) and on `vX.Y.Z` tags.
 
 ---
 
