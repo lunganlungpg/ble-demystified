@@ -7,6 +7,7 @@ An interactive, visual, zero-hardware educational guide and live playground for 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![Zero Hardware Required](https://img.shields.io/badge/Hardware-None%20Required-success?style=for-the-badge)](#quickstart-in-3-commands)
 [![Node 18+](https://img.shields.io/badge/Node.js-18%2B-informational?style=for-the-badge&logo=node.js)](https://nodejs.org)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge)](CONTRIBUTING.md)
 
 Ever wondered how your fitness tracker or smartwatch whispers heart-rate readings to your phone without killing its battery before lunchtime? 
 
