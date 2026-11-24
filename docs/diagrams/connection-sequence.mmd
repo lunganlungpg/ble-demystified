@@ -1,0 +1,25 @@
+sequenceDiagram
+    autonumber
+    actor User as User / App
+    participant Central as Central (Web Client)
+    participant Peripheral as Peripheral (Sensor)
+
+    Note over Peripheral: GAP: Advertising on CH 37, 38, 39
+    Peripheral->>Central: ADV_IND (Heart Rate 0x180D, RSSI -64dBm)
+    User->>Central: Click Connect
+    Central->>Peripheral: CONNECT_IND (Interval 20ms, Latency 0, Timeout 4s)
+    Note over Central,Peripheral: Jump to Data Channels (FHSS Locked)
+
+    Central->>Peripheral: ATT_EXCHANGE_MTU_REQ (Client MTU: 247)
+    Peripheral->>Central: ATT_EXCHANGE_MTU_RSP (Server MTU: 247)
+
+    Central->>Peripheral: ATT_READ_REQ [Handle 0x2A19: Battery Level]
+    Peripheral->>Central: ATT_READ_RSP [Value: 0x5C (92%)]
+
+    Central->>Peripheral: ATT_WRITE_REQ [Handle 0x2902: CCCD = 0x0001]
+    Peripheral->>Central: ATT_WRITE_RSP [Write Success]
+
+    loop Every 1000ms (Stream)
+        Peripheral->>Central: ATT_HANDLE_VALUE_NTF [0x2A37: Flags, BPM, RR]
+        Note over Central: Live ECG Waveform Chart Updated!
+    end

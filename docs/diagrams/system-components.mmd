@@ -1,0 +1,42 @@
+flowchart LR
+    subgraph CENTRAL_TIER["Central / Client Tier"]
+        WEB_APP["Web Client
+(web/index.html & app.js)"]
+        EXPLAINER["Interactive Explainer
+(explainer/index.html)"]
+        WEB_BT["Web Bluetooth API
+(navigator.bluetooth)"]
+    end
+
+    subgraph BRIDGE_TIER["Simulation & Transport Tier"]
+        HTTP_SSE["Zero-Dependency Server
+(simulator/server.js)"]
+        REST_API["REST Endpoints
+(/api/status, /api/gatt/*)"]
+        SSE_STREAM["Server-Sent Events
+(/api/events)"]
+    end
+
+    subgraph PERIPHERAL_TIER["Peripheral Tier"]
+        GATT_DB["Simulated GATT Database
+(Battery, HR, Custom Control)"]
+        TELEMETRY["Telemetry Engine
+(simulator/telemetry.js)"]
+        ESP32["Optional ESP32 Firmware
+(hardware/esp32/ble_peripheral.ino)"]
+    end
+
+    subgraph DATA_TIER["Visuals & Datasets"]
+        DATASET["data/telemetry.sample.json"]
+        PLOTS["docs/img/*.svg"]
+    end
+
+    WEB_APP <--> WEB_BT
+    WEB_BT -. Physical BLE .-> ESP32
+    WEB_APP <--> HTTP_SSE
+    EXPLAINER <--> HTTP_SSE
+    HTTP_SSE --> REST_API & SSE_STREAM
+    REST_API & SSE_STREAM <--> GATT_DB
+    GATT_DB --> TELEMETRY
+    TELEMETRY --> DATASET
+    DATASET --> PLOTS

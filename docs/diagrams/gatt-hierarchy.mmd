@@ -1,0 +1,37 @@
+flowchart TD
+    PROFILE["Heart Rate Sensor Profile (HRP)"]
+
+    subgraph SERVICES["Primary GATT Services"]
+        S1["Generic Access Service (0x1800)"]
+        S2["Battery Service (0x180F)"]
+        S3["Heart Rate Service (0x180D)"]
+        S4["Custom Control Service (0xFFF0)"]
+    end
+
+    subgraph CHARACTERISTICS["Characteristics (Value + Properties)"]
+        C1["Device Name (0x2A00)
+[READ] 'PulseGlow BLE'"]
+        C2["Battery Level (0x2A19)
+[READ, NOTIFY] 92%"]
+        C3["Heart Rate Measurement (0x2A37)
+[NOTIFY] Flags, BPM, RR"]
+        C4["Body Sensor Location (0x2A38)
+[READ] 1 (Chest)"]
+        C5["Mode Control (0xFFF1)
+[READ, WRITE] 0 (Resting)"]
+    end
+
+    subgraph DESCRIPTORS["Descriptors (Metadata & Config)"]
+        D1["CCCD (0x2902)
+Client Characteristic Config"]
+        D2["CCCD (0x2902)
+Client Characteristic Config"]
+    end
+
+    PROFILE --> S1 & S2 & S3 & S4
+    S1 --> C1
+    S2 --> C2
+    S3 --> C3 & C4
+    S4 --> C5
+    C2 --> D1
+    C3 --> D2

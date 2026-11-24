@@ -1,0 +1,29 @@
+flowchart TD
+    subgraph APPLICATION_LAYER["Application Layer"]
+        APP["Application (Fitness App, HealthKit, Web Bluetooth)"]
+        PROFILE["Profiles (Heart Rate Profile HRP, Battery Profile)"]
+    end
+
+    subgraph HOST["Host (Operating System / Software Stack)"]
+        GAP["GAP (Generic Access Profile: Roles, Adv, Scanning, Conn)"]
+        GATT["GATT (Generic Attribute Profile: Services & Characteristics)"]
+        ATT["ATT (Attribute Protocol: Client/Server, Opcodes, Handles)"]
+        SMP["SMP (Security Manager: Pairing, AES-128 Encryption, Bonding)"]
+        L2CAP["L2CAP (Logical Link Control: Multiplexing, Segmentation)"]
+    end
+
+    subgraph CONTROLLER["Controller (Hardware / Radio Silicon)"]
+        HCI["HCI (Host Controller Interface: UART/USB transport)"]
+        LL["Link Layer (State Machine, Timing, 40 Channels, FHSS)"]
+        PHY["Physical Layer PHY (2.4 GHz GFSK, 1 Mbps / 2 Mbps / Coded)"]
+    end
+
+    APP --> PROFILE
+    PROFILE --> GATT
+    GATT --> ATT
+    GAP --> LL
+    ATT --> L2CAP
+    SMP --> L2CAP
+    L2CAP --> HCI
+    HCI --> LL
+    LL --> PHY

@@ -1,0 +1,10 @@
+stateDiagram-v2
+    [*] --> STANDBY
+    STANDBY --> ADVERTISING : Enable Advertising (Peripheral)
+    STANDBY --> SCANNING : Start Scanning (Central)
+    ADVERTISING --> STANDBY : Stop Advertising / Timeout
+    SCANNING --> STANDBY : Stop Scanning
+    SCANNING --> INITIATING : Target ADV_IND Packet Detected
+    INITIATING --> CONNECTED : Transmit CONNECT_IND / Synchronize
+    ADVERTISING --> CONNECTED : Receive CONNECT_IND
+    CONNECTED --> STANDBY : Link Disconnect / Supervision Timeout
